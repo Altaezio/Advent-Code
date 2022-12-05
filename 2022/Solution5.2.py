@@ -14,8 +14,8 @@ for index, line in enumerate(data):
             stack.reverse()
     elif index > 9:
         splitted = line.rstrip().split(' ')
-        for numberOfCreateToMove in range(int(splitted[1])):
-            stacks[int(splitted[5]) - 1].append(stacks[int(splitted[3]) - 1].pop())
+        stacks[int(splitted[5]) - 1] += stacks[int(splitted[3]) - 1][-int(splitted[1]):]
+        stacks[int(splitted[3]) - 1] = stacks[int(splitted[3]) - 1][:-int(splitted[1])]
 
 tops = ''
 for stack in stacks:
