@@ -1,6 +1,5 @@
 data = open("Input7.txt", "r")
 
-threshold = 100000
 
 class Dir:
     def __init__(self, name, parent):
@@ -22,6 +21,14 @@ class Dir:
         total += sum([sub.sumFileUnder(threshold) for sub in self.subDirFile])
         return total
 
+    def smallestBiggerThan(self, threshold, currentMin):
+        itSize = self.size()
+        if itSize < threshold:
+            return currentMin
+        currentMin = min([sub.smallestBiggerThan(threshold, currentMin) for sub in self.subDirFile])
+        currentMin = itSize if itSize < currentMin else currentMin
+        return currentMin
+
     def __str__(self):
         return f"- {self.name}\n" + ''.join(['\t' + str(sub) + '\n' for sub in self.subDirFile])
 
@@ -37,6 +44,9 @@ class File:
     def sumFileUnder(self, threshold):
         return 0
 
+    def smallestBiggerThan(self, threshold, currentMin):
+        return currentMin
+
     def __str__(self):
         return f"\t- {self.name}, size={self.fileSize}"
 
@@ -47,6 +57,13 @@ def FindMatchDirFile(dirToLookInto, name):
         index += 1
         matchingDirFile = dirToLookInto.subDirFile[index]
     return matchingDirFile
+
+
+
+totalAvailable = 70000000
+
+memToHaveFree = 30000000
+
 
 root = Dir('/', None)
 
@@ -72,4 +89,11 @@ for line in data:
         case _:
             currentDirFile.addsub(File(splitted[1], currentDirFile, int(splitted[0])))
 
-print(root.sumFileUnder(threshold))
+
+
+
+threshold = memToHaveFree - (totalAvailable - root.size())
+
+print(threshold)
+
+print(root.smallestBiggerThan(threshold, root.size()))
