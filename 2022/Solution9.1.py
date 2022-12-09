@@ -14,8 +14,6 @@ def printState():
     for row in table:
         print(row)
 
-nodes = [[0,0] for _ in range(10)]
-
 headx = heady = tailx = taily = 0
 
 tailPositions = set(())
