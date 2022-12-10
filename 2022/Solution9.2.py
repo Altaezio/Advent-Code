@@ -38,19 +38,11 @@ for line in data:
 
         for nodeIndex, node in enumerate(nodes[1:]):
             head = nodes[nodeIndex]
+
             if abs(head[0] - node[0]) > ropeLength or abs(head[1] - node[1]) > ropeLength:
-                if head[0] == node[0]:
-                    if node[1] - head[1] == ropeLength + 1:
-                        node[1] -= 1
-                    elif node[1] - head[1] == -ropeLength - 1:
-                        node[1] += 1
-                elif head[1] == node[1]:
-                    if node[0] - head[0] == ropeLength + 1:
-                        node[0] -= 1
-                    elif node[0] - head[0] == -ropeLength - 1:
-                        node[0] += 1
-                elif head[0] != node[0] and head[1] != node[1]:
+                if head[0] - node[0] != 0:
                     node[0] += int((head[0] - node[0]) / abs(head[0] - node[0]))
+                if head[1] - node[1] != 0:
                     node[1] += int((head[1] - node[1]) / abs(head[1] - node[1]))
             sTP(nodes[-1][0], nodes[-1][1])
         

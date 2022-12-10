@@ -1,3 +1,5 @@
+from math import copysign
+
 data = open("Input9.txt", "r")
 
 def sTP():
@@ -37,18 +39,9 @@ for line in data:
                 headx -= 1
 
         if abs(headx - tailx) > ropeLength or abs(heady - taily) > ropeLength:
-            if headx == tailx:
-                if taily - heady == ropeLength + 1:
-                    taily -= 1
-                elif taily - heady == -ropeLength - 1:
-                    taily += 1
-            elif heady == taily:
-                if tailx - headx == ropeLength + 1:
-                    tailx -= 1
-                elif tailx - headx == -ropeLength - 1:
-                    tailx += 1
-            elif headx != tailx and heady != taily:
+            if headx - tailx != 0:
                 tailx += int((headx - tailx) / abs(headx - tailx))
+            if heady - taily != 0:
                 taily += int((heady - taily) / abs(heady - taily))
                 
             sTP()
