@@ -1,6 +1,4 @@
-import heapq
-
-data = open("test.txt", "r")
+data = open("Input12.txt", "r")
 
 class Node:
     def __init__(self, x, y, height, cost, heuristic):
@@ -11,70 +9,97 @@ class Node:
         self.heuristic = heuristic
 
     def __str__(self):
-        return f"({self.x},{self.y}) cost : {self.cost} heuristic : {self.heuristic}"
-
-def Compare(node):
-    if node.heuristic < node.heuristic:
-        return 1
-    if node.heuristic == node.heuristic:
-        return 0
-    else:
-        return -1
+        return f"({self.x},{self.y}) cost : {self.cost} heuristic : {self.heuristic} height : {self.height}"
 
 def Voisins(node):
     voisins = []
-    if node.x - 1 >= 0 and heightMap[node.x - 1][node.y].height <= node.height + 1:
+    if node.x - 1 >= 0 and ord(heightMap[node.x - 1][node.y].height) <= ord(node.height) + 1:
         voisins.append(heightMap[node.x - 1][node.y])
-    if node.x + 1 < len(heightMap) and heightMap[node.x + 1][node.y].height <= node.height + 1:
+    if node.x + 1 < len(heightMap) and ord(heightMap[node.x + 1][node.y].height) <= ord(node.height) + 1:
         voisins.append(heightMap[node.x + 1][node.y])
-    if node.y - 1 >= 0 and heightMap[node.x][node.y - 1].height <= node.height + 1:
+    if node.y - 1 >= 0 and ord(heightMap[node.x][node.y - 1].height) <= ord(node.height) + 1:
         voisins.append(heightMap[node.x][node.y - 1])
-    if node.y + 1 < len(heightMap[node.x]) and heightMap[node.x][node.y + 1].height <= node.height + 1:
+    if node.y + 1 < len(heightMap[node.x]) and ord(heightMap[node.x][node.y + 1].height) <= ord(node.height) + 1:
         voisins.append(heightMap[node.x][node.y + 1])
+    return voisins
 
 def Astar(): # A* implementation using Wikipedia
     closedList = []
     openLists = []
-    openLists.append(debut)
+    openLists.append(beginning)
     while len(openLists) > 0:
         u = openLists[0]
         openLists = openLists[1:]
-        if u.x == fin.x and u.y == fin.y:
-            # reconstituer le chemin ?
-            print('end')
+        if u.x == end.x and u.y == end.y:
+            closedList.append(u)
+            print("end")
             return closedList
         for voisin in Voisins(u):
-            if voisin not in closedList or (any(voisin.heuristic < node.heuristic) for node in openLists):
-                voisin.cost = u.cost + 1
-                voisin.heuristic = voisin.cost + (fin.x - voisin.x) ** 2 + (fin.y - voisin.y) ** 2
-                # Ajouter à la file openLists attention à l'ajout, trier avec Compare
-                openLists.append(voisin)
+            voisinInClosedList = any([(voisin.x == node.x and voisin.y == node.y) for node in closedList])
+            voisinInOpenLists = any([(voisin.heuristic >= node.heuristic and voisin.x == node.x and voisin.y == node.y) for node in openLists])
+            if not voisinInClosedList and not voisinInOpenLists:
+                openLists.append(Node(voisin.x, voisin.y, voisin.height, u.cost + 1, voisin.cost + abs(end.x - voisin.x) + abs(end.y - voisin.y)))
                 openLists.sort(key=lambda node:node.heuristic)
-        closedLists.append(u)
-    print("Pas de chemin trouvé")
+        closedList.append(u)
+    print("No path found")
                 
+def BestVoisinInClosedList(node):
+    voisins = []
+    if node.x - 1 >= 0 and ord(heightMap[node.x - 1][node.y].height) >= ord(node.height) - 1:
+        voisins.append(heightMap[node.x - 1][node.y])
+    if node.x + 1 < len(heightMap) and ord(heightMap[node.x + 1][node.y].height) >= ord(node.height) - 1:
+        voisins.append(heightMap[node.x + 1][node.y])
+    if node.y - 1 >= 0 and ord(heightMap[node.x][node.y - 1].height) >= ord(node.height) - 1:
+        voisins.append(heightMap[node.x][node.y - 1])
+    if node.y + 1 < len(heightMap[node.x]) and ord(heightMap[node.x][node.y + 1].height) >= ord(node.height) - 1:
+        voisins.append(heightMap[node.x][node.y + 1])
+    for voisin in voisins:
+        for cnode in closedList:
+            if voisin.x == cnode.x and voisin.y == cnode.y and cnode.cost == node.cost - 1:
+                return cnode
 
 heightMap = []
 
-fin = Node(0,0,'z',-1,0)
-debut = Node(0,0,'a',0,0)
+end = Node(0,0,'z',0,0)
+beginning = Node(0,0,'a',0,0)
 
 for rowIndex, line in enumerate(data):
+    line = line.rstrip()
     heightMap += [[]]
-    print(heightMap)
     for colIndex, height in enumerate(list(line.rstrip())):
-        heightMap[rowIndex].append(Node(rowIndex, colIndex, height, -1, -1))
-    if 'S' in heightMap[rowIndex]:
-        debut.x = rowIndex
-        debut.y = heightMap[rowIndex].index('S')
-    elif 'E' in heightMap[rowIndex]:
-        fin.x = rowIndex
-        fin.y = heightMap[rowIndex].index('E')
+        addNode = Node(rowIndex, colIndex, height, -1, 0)
+        if height == 'S':
+            beginning.x = rowIndex
+            beginning.y = line.index('S')
+            addNode = beginning
+        elif height == 'E':
+            end.x = rowIndex
+            end.y = line.index('E')
+            addNode = end
+        heightMap[rowIndex].append(addNode)
 
-debut.heuristic = (fin.x - debut.x) ** 2 + (fin.y - debut.y) ** 2
+beginning.heuristic = abs(end.x - beginning.x) + abs(end.y - beginning.y)
 
-print(debut, fin)
+print(beginning, end)
 
-Astar()
+closedList = sorted(Astar(), key=lambda lnode: lnode.cost)
 
+end.cost = closedList[-2].cost + 1 # To have the cost to get to the end
 
+screen = [['.' for _ in row] for row in heightMap]
+
+steps = 0
+node = end
+while node.x != beginning.x or node.y != beginning.y:
+    steps += 1
+    screen[node.x][node.y] = node.height
+    node = BestVoisinInClosedList(node)
+
+screen[node.x][node.y] = 'S'
+
+for row in screen:
+    for pixel in row:
+        print(pixel, end='')
+    print()
+
+print(steps)
