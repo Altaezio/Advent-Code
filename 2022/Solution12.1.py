@@ -23,31 +23,33 @@ def Compare(node):
 
 def Voisins(node):
     voisins = []
-    if node.x - 1 >= 0 && heightMap[node.x - 1][node.y].height <= node.height + 1:
+    if node.x - 1 >= 0 and heightMap[node.x - 1][node.y].height <= node.height + 1:
         voisins.append(heightMap[node.x - 1][node.y])
-    if node.x + 1 < len(heightMap) && heightMap[node.x + 1][node.y].height <= node.height + 1:
+    if node.x + 1 < len(heightMap) and heightMap[node.x + 1][node.y].height <= node.height + 1:
         voisins.append(heightMap[node.x + 1][node.y])
-    if node.y - 1 >= 0 && heightMap[node.x][node.y - 1].height <= node.height + 1:
+    if node.y - 1 >= 0 and heightMap[node.x][node.y - 1].height <= node.height + 1:
         voisins.append(heightMap[node.x][node.y - 1])
-    if node.y + 1 < len(heightMap[node.x]) && heightMap[node.x][node.y + 1].height <= node.height + 1:
+    if node.y + 1 < len(heightMap[node.x]) and heightMap[node.x][node.y + 1].height <= node.height + 1:
         voisins.append(heightMap[node.x][node.y + 1])
 
 def Astar(): # A* implementation using Wikipedia
     closedList = []
     openLists = []
-    openList.append(debut)
-    while len(openList) > 0:
-        u = openList[0]
-        openList = openList[1:]
-        if u[0] == fin[0] and u[1] == fin[1]:
+    openLists.append(debut)
+    while len(openLists) > 0:
+        u = openLists[0]
+        openLists = openLists[1:]
+        if u.x == fin.x and u.y == fin.y:
             # reconstituer le chemin ?
             print('end')
-            return
+            return closedList
         for voisin in Voisins(u):
-            if voisin not in closedList or any(voisin.heuristic < node.heuristic) for node in openLists:
+            if voisin not in closedList or (any(voisin.heuristic < node.heuristic) for node in openLists):
                 voisin.cost = u.cost + 1
                 voisin.heuristic = voisin.cost + (fin.x - voisin.x) ** 2 + (fin.y - voisin.y) ** 2
                 # Ajouter à la file openLists attention à l'ajout, trier avec Compare
+                openLists.append(voisin)
+                openLists.sort(key=lambda node:node.heuristic)
         closedLists.append(u)
     print("Pas de chemin trouvé")
                 
@@ -58,9 +60,10 @@ fin = Node(0,0,'z',-1,0)
 debut = Node(0,0,'a',0,0)
 
 for rowIndex, line in enumerate(data):
-    heightMap += []
+    heightMap += [[]]
+    print(heightMap)
     for colIndex, height in enumerate(list(line.rstrip())):
-        heightMap[rowIndex].append(Node(rowIndex, colIndex, height, -1))
+        heightMap[rowIndex].append(Node(rowIndex, colIndex, height, -1, -1))
     if 'S' in heightMap[rowIndex]:
         debut.x = rowIndex
         debut.y = heightMap[rowIndex].index('S')
@@ -71,4 +74,7 @@ for rowIndex, line in enumerate(data):
 debut.heuristic = (fin.x - debut.x) ** 2 + (fin.y - debut.y) ** 2
 
 print(debut, fin)
+
+Astar()
+
 
