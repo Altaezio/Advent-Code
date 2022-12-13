@@ -1,3 +1,5 @@
+import math
+
 data = open("Input12.txt", "r")
 
 class Node:
@@ -10,6 +12,11 @@ class Node:
 
     def __str__(self):
         return f"({self.x},{self.y}) cost : {self.cost} heuristic : {self.heuristic} height : {self.height}"
+
+def Distance(node1, node2):
+    return (node1.x - node2.x)**2 + (node1.y - node2.y)**2 # square euclide
+    #return abs(node1.x - node2.x) + abs(node1.y - node2.y) # manhattan
+    #return 0
 
 def Voisins(node):
     voisins = []
@@ -38,9 +45,22 @@ def Astar(): # A* implementation using Wikipedia
             voisinInClosedList = any([(voisin.x == node.x and voisin.y == node.y) for node in closedList])
             voisinInOpenLists = any([(voisin.heuristic >= node.heuristic and voisin.x == node.x and voisin.y == node.y) for node in openLists])
             if not voisinInClosedList and not voisinInOpenLists:
-                openLists.append(Node(voisin.x, voisin.y, voisin.height, u.cost + 1, voisin.cost + abs(end.x - voisin.x) + abs(end.y - voisin.y)))
+                openLists.append(Node(voisin.x, voisin.y, voisin.height, u.cost + 1, u.cost + 1 + Distance(voisin, end)))
                 openLists.sort(key=lambda node:node.heuristic)
         closedList.append(u)
+    """    if len(closedList) % 100 == 0:
+            screen = [['.' for _ in row] for row in heightMap]
+
+            for node in closedList:
+                screen[node.x][node.y] = node.height
+
+            show = ''
+
+            for row in screen:
+                for pixel in row:
+                    show += pixel
+                show+='\n'
+            print(show, len(closedList))"""
     print("No path found")
                 
 def BestVoisinInClosedList(node):
@@ -78,7 +98,7 @@ for rowIndex, line in enumerate(data):
             addNode = end
         heightMap[rowIndex].append(addNode)
 
-beginning.heuristic = abs(end.x - beginning.x) + abs(end.y - beginning.y)
+beginning.heuristic = Distance(beginning, end)
 
 print(beginning, end)
 
@@ -94,12 +114,15 @@ while node.x != beginning.x or node.y != beginning.y:
     steps += 1
     screen[node.x][node.y] = node.height
     node = BestVoisinInClosedList(node)
+    #print(node)
 
 screen[node.x][node.y] = 'S'
-
+show=''
 for row in screen:
     for pixel in row:
-        print(pixel, end='')
-    print()
+        show+=pixel
+    show+='\n'
+
+print(show)
 
 print(steps)
