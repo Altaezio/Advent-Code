@@ -31,7 +31,7 @@ def Astar(beginning): # A* implementation using Wikipedia
         u = openLists.pop(0)
         if u.x == end.x and u.y == end.y:
             closedList.append(u)
-            print("end with", u)
+            #print("end with", u)
             return closedList
         for voisin in Voisins(u):
             voisinInClosedList = any([(voisin.x == node.x and voisin.y == node.y) for node in closedList])
@@ -40,9 +40,9 @@ def Astar(beginning): # A* implementation using Wikipedia
                 openLists.append(Node(voisin.x, voisin.y, voisin.height, u.cost + 1, 0))
                 openLists.sort(key=lambda node:node.heuristic)
         closedList.append(u)
-        if len(closedList) % 100 == 0:
-            PrintScreen()
-    print("No path found")
+        #if len(closedList) % 100 == 0:
+            #PrintScreen()
+    #print("No path found")
     return []
                 
 def BestVoisinInClosedList(node):
@@ -78,6 +78,7 @@ def PrintScreen():
 heightMap = []
 
 end = Node(0,0,'z',0,0)
+#beginning = Node(0,0,'a',0,0)
 beginnings = []
 
 for rowIndex, line in enumerate(data):
@@ -85,7 +86,7 @@ for rowIndex, line in enumerate(data):
     heightMap += [[]]
     for colIndex, height in enumerate(list(line.rstrip())):
         addNode = Node(rowIndex, colIndex, height, -1, 0)
-        if height == 'S':
+        if height == 'S' or height == 'a':
             beginnings.append(Node(rowIndex, colIndex, 'a', 0, 0))
             addNode = beginnings[-1]
         elif height == 'E':
@@ -96,6 +97,8 @@ for rowIndex, line in enumerate(data):
 
 allSteps = []
 
+print(len(beginnings), "a")
+
 for index, beginning in enumerate(beginnings):
     closedList = Astar(beginning)
 
@@ -105,13 +108,7 @@ for index, beginning in enumerate(beginnings):
     end = closedList[-1]
 
     steps = end.cost
-    node = end
-    while node.x != beginning.x or node.y != beginning.y:
-        steps += 1
-        screen[node.x][node.y] = node.height
-        node = BestVoisinInClosedList(node)
-        PrintScreen()
-    
     allSteps.append(steps)
+    print(index * 100 / len(beginnings), ", steps", steps)
 
 print(sorted(allSteps)[0])
