@@ -1,6 +1,5 @@
 
 #include <vector>
-#include <string>
 #include "../FileHandler.h"
 #include "J1.h"
 
@@ -25,7 +24,7 @@ string getFirstDigit(string line)
 	return string(1, line[digitPosition]);
 }
 
-std::string getLastDigit(std::string line)
+string getLastDigit(std::string line)
 {
 	int digitPosition = line.find_last_of("123456789");
 	return string(1, line[digitPosition]);

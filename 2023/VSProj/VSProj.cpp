@@ -3,10 +3,12 @@
 
 #include <iostream>
 #include "Solution/J1.h"
+#include "Solution/J2.h"
+#include "Solution/J3.h"
 
 int main()
 {
-    std::cout << "Solution is : " << sol1v2() << "\n";
+    std::cout << "Solution is : " << sol3v1() << "\n";
 }
 
 // Exécuter le programme : Ctrl+F5 ou menu Déboguer > Exécuter sans débogage

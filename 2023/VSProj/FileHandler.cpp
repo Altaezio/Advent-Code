@@ -1,5 +1,6 @@
 #include "FileHandler.h"
 #include <fstream>
+#include <iostream>
 
 using namespace std;
 
@@ -12,4 +13,12 @@ vector<string> getSolutionLines(string pathToFile)
         lines.push_back(line);
     }
     return lines;
+}
+
+void coutList(std::vector<string> list)
+{
+    for (string line : list)
+    {
+        cout << line << endl;
+    }
 }
