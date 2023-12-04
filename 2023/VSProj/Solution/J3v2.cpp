@@ -1,15 +1,18 @@
 #include <iostream>
+#include <map>
 #include "../FileHandler.h"
 #include "J3.h"
 
 using namespace std;
 
-string sol3v1()
+string sol3v2()
 {
 	vector<string> lines = getSolutionLines("J3");
 	vector<string> debugLines{ string() };
 
 	int sum = 0;
+
+	map<tuple<size_t, size_t>, vector<int>> gearRatio;
 
 	size_t currentColumn = 0;
 	size_t currentLine = 0;
@@ -26,9 +29,9 @@ string sol3v1()
 			debugLines.push_back(string());
 			currentColumn = 0;
 		}
-		
+
 		string line = lines[currentLine];
-		
+
 		if (!isdigit(line[currentColumn])) // NaN
 		{
 			debugLines[currentLine].push_back(line[currentColumn]);
@@ -39,14 +42,25 @@ string sol3v1()
 		string subLine = line.substr(currentColumn);
 		size_t lengthNumber = 0;
 		int partNumber = stoi(subLine, &lengthNumber);
-		if (!oneNeighbourIsSymbol(lines, currentLine, currentColumn, currentColumn + lengthNumber))
+		tuple<size_t, size_t> gearPosition;
+		if (!getGearNeighbour(lines, currentLine, currentColumn, currentColumn + lengthNumber, gearPosition))
 		{
 			debugLines[currentLine].append(string(lengthNumber, 'X'));
 		}
 		else
 		{
 			debugLines[currentLine].append(to_string(partNumber));
-			sum += partNumber;
+			auto search = gearRatio.find(gearPosition);
+			if (search != gearRatio.end())
+			{
+				cout << "(" << get<0>(gearPosition) << "," << get<1>(gearPosition) << ") : ";
+				cout << search->second[0] << "*" << partNumber << endl;
+				sum += search->second[0] * partNumber;
+			}
+			else
+			{
+				gearRatio[gearPosition] = vector<int>{ partNumber };
+			}
 		}
 
 		currentColumn += lengthNumber;
@@ -54,13 +68,14 @@ string sol3v1()
 	return "error";
 }
 
-bool oneNeighbourIsSymbol(std::vector<std::string> lines, size_t lineIndex, size_t begin, size_t end)
+bool getGearNeighbour(vector<string> lines, size_t lineIndex, size_t begin, size_t end, tuple<size_t, size_t>& outGearPosition)
 {
 	size_t lowerEnd = 0uLL;
 	if (begin > 0)
 	{
-		if (lines[lineIndex][begin - 1] != '.')
+		if (lines[lineIndex][begin - 1] == '*')
 		{
+			outGearPosition = tuple<size_t, size_t>{ lineIndex, begin - 1 };
 			return true;
 		}
 		lowerEnd = begin - 1;
@@ -68,8 +83,9 @@ bool oneNeighbourIsSymbol(std::vector<std::string> lines, size_t lineIndex, size
 	size_t higherEnd = end - lowerEnd;
 	if (end + 1 < lines[0].size())
 	{
-		if (lines[lineIndex][end] != '.')
+		if (lines[lineIndex][end] == '*')
 		{
+			outGearPosition = tuple<size_t, size_t>{ lineIndex, end };
 			return true;
 		}
 		higherEnd++;
@@ -78,16 +94,20 @@ bool oneNeighbourIsSymbol(std::vector<std::string> lines, size_t lineIndex, size
 	if (lineIndex > 0)
 	{
 		string substr = lines[lineIndex - 1].substr(lowerEnd, higherEnd);
-		if (substr.find_first_not_of(".123456789") != string::npos)
+		size_t starPosition = substr.find_first_of("*");
+		if (starPosition != string::npos)
 		{
+			outGearPosition = tuple<size_t, size_t>{ lineIndex - 1, lowerEnd + starPosition };
 			return true;
 		}
 	}
 	if (lineIndex + 1 < lines.size())
 	{
 		string substr = lines[lineIndex + 1].substr(lowerEnd, higherEnd);
-		if (substr.find_first_not_of(".123456789") !=  string::npos)
+		size_t starPosition = substr.find_first_of("*");
+		if (starPosition != string::npos)
 		{
+			outGearPosition = tuple<size_t, size_t>{ lineIndex + 1, lowerEnd + starPosition };
 			return true;
 		}
 	}

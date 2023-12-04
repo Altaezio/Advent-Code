@@ -8,7 +8,7 @@
 
 int main()
 {
-    std::cout << "Solution is : " << sol3v1() << "\n";
+    std::cout << "Solution is : " << sol3v2() << "\n";
 }
 
 // Exécuter le programme : Ctrl+F5 ou menu Déboguer > Exécuter sans débogage
