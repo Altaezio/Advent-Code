@@ -1,6 +1,7 @@
 #include "FileHandler.h"
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -15,10 +16,32 @@ vector<string> getSolutionLines(string pathToFile)
     return lines;
 }
 
-void coutList(std::vector<string> list)
+void coutList(vector<string> list)
 {
     for (string line : list)
     {
         cout << line << endl;
     }
+}
+
+vector<string> Extract(const string& Text) {
+    vector<string> Words;
+    stringstream ss(Text);
+    string Buf;
+
+    while (ss >> Buf)
+        Words.push_back(Buf);
+
+    return Words;
+}
+
+vector<int> ExtractInt(const string& Text) {
+    vector<int> numbers;
+    stringstream ss(Text);
+    string Buf;
+
+    while (ss >> Buf)
+        numbers.push_back(stoi(Buf));
+
+    return numbers;
 }
