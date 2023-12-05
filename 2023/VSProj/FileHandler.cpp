@@ -45,3 +45,14 @@ vector<int> ExtractInt(const string& Text) {
 
     return numbers;
 }
+
+vector<long long> Extractll(const string& Text) {
+    vector<long long> numbers;
+    stringstream ss(Text);
+    string Buf;
+
+    while (ss >> Buf)
+        numbers.push_back(stoll(Buf));
+
+    return numbers;
+}

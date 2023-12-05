@@ -6,10 +6,11 @@
 #include "Solution/J2.h"
 #include "Solution/J3.h"
 #include "Solution/J4.h"
+#include "Solution/J5.h"
 
 int main()
 {
-    std::cout << "Solution is : " << sol4v2() << "\n";
+    std::cout << "Solution is : " << sol5v2() << "\n";
 }
 
 // Exécuter le programme : Ctrl+F5 ou menu Déboguer > Exécuter sans débogage

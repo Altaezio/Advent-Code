@@ -20,12 +20,12 @@ string sol1v1()
 
 string getFirstDigit(string line)
 {
-	int digitPosition = line.find_first_of("123456789");
+	size_t digitPosition = line.find_first_of("123456789");
 	return string(1, line[digitPosition]);
 }
 
 string getLastDigit(std::string line)
 {
-	int digitPosition = line.find_last_of("123456789");
+	size_t digitPosition = line.find_last_of("123456789");
 	return string(1, line[digitPosition]);
 }

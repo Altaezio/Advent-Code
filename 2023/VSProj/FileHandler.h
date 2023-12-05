@@ -10,3 +10,5 @@ void coutList(std::vector<std::string> list);
 std::vector<std::string> Extract(const std::string& Text);
 
 std::vector<int> ExtractInt(const std::string& Text);
+
+std::vector<long long> Extractll(const std::string& Text);
