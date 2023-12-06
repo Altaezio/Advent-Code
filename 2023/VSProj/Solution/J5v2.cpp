@@ -26,7 +26,7 @@ string sol5v2()
 		if (line.size() < 2)
 		{
 			currentInterval++;
-			lineIndex += 2;
+			lineIndex++;
 			continue;
 		}
 
@@ -62,14 +62,14 @@ long long getValueIntervalRange(std::vector<std::vector<std::vector<long long>>>
 					value = b + (value - a);
 				}*/
 
-				if (a + offset < startValue || a >= startValue + rangeValue) // value outside section
+				if (a + offset <= startValue || a >= startValue + rangeValue) // value outside section
 				{
 					continue;
 				}
 				long long startPos = max(startValue, a);
 				long long endPos = min(startValue + rangeValue, a + offset) - 1;
 
-				valuesNext.push_back(vector<long long> {b + (startPos - a), endPos - startPos});
+				valuesNext.push_back(vector<long long> {b + (startPos - a), endPos - startPos + 1});
 				valuesLeft.erase(valuesLeft.begin() + valuek);
 				valuek--;
 				numberValuesToCheck--;
