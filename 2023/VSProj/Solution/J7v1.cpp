@@ -2,7 +2,6 @@
 #include <map>
 #include <algorithm>
 #include "../FileHandler.h"
-#include "J5.h"
 #include "J7.h"
 
 using namespace std;
