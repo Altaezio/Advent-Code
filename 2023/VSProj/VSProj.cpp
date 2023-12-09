@@ -1,6 +1,3 @@
-// VSProj.cpp : Ce fichier contient la fonction 'main'. L'exécution du programme commence et se termine à cet endroit.
-//
-
 #include <iostream>
 #include "Solution/J1.h"
 #include "Solution/J2.h"
@@ -14,5 +11,5 @@
 
 int main()
 {
-    std::cout << "Solution is : " << sol9v1() << "\n";
+	std::cout << "Solution is : " << sol9v2() << "\n";
 }
