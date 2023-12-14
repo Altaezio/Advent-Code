@@ -13,7 +13,9 @@ string sol13v2()
 	int sum = 0;
 	for (vector<string> pattern : patterns)
 	{
-		sum += getPatternValueV2(pattern);
+		int patternValue = getPatternValueV2(pattern);
+		sum += patternValue;
+		cout << patternValue << endl;
 	}
 	return to_string(sum);
 }
