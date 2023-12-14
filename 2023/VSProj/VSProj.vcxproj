@@ -122,6 +122,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FileHandler.cpp" />
+    <ClCompile Include="Solution\J13v1.cpp" />
+    <ClCompile Include="Solution\J13v2.cpp" />
     <ClCompile Include="solution\J1v1.cpp" />
     <ClCompile Include="solution\J1v2.cpp" />
     <ClCompile Include="solution\J2v1.cpp" />
@@ -143,6 +145,7 @@
   <ItemGroup>
     <ClInclude Include="FileHandler.h" />
     <ClInclude Include="solution\J1.h" />
+    <ClInclude Include="Solution\J13.h" />
     <ClInclude Include="solution\J2.h" />
     <ClInclude Include="solution\J3.h" />
     <ClInclude Include="solution\J4.h" />
