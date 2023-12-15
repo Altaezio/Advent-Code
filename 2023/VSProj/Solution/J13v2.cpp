@@ -15,7 +15,6 @@ string sol13v2()
 	{
 		int patternValue = getPatternValueV2(pattern);
 		sum += patternValue;
-		cout << patternValue << endl;
 	}
 	return to_string(sum);
 }
@@ -34,7 +33,7 @@ int getPatternValueV2(vector<string>& pattern)
 
 size_t symetryV2(vector<string>& pattern, int (*countDiff)(vector<string>&, size_t, size_t), size_t highLimit)
 {
-	for (size_t i = 0; i < pattern.size() - 1; i++)
+	for (size_t i = 0; i < highLimit - 1; i++)
 	{
 		if (isSymetricFromIndex(pattern, i, countDiff, highLimit))
 		{
