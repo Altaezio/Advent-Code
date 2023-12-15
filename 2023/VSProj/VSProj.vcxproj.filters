@@ -75,6 +75,12 @@
     <ClCompile Include="Solution\J13v2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Solution\J15v1.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Solution\J15v2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FileHandler.h">
@@ -105,6 +111,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Solution\J13.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Solution\J15.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
