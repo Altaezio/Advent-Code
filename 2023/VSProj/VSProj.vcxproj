@@ -127,6 +127,7 @@
     <ClCompile Include="Solution\J15v1.cpp" />
     <ClCompile Include="Solution\J15v2.cpp" />
     <ClCompile Include="Solution\J18v1.cpp" />
+    <ClCompile Include="Solution\J18v2.cpp" />
     <ClCompile Include="solution\J1v1.cpp" />
     <ClCompile Include="solution\J1v2.cpp" />
     <ClCompile Include="solution\J2v1.cpp" />

@@ -14,5 +14,5 @@
 
 int main()
 {
-	std::cout << "Solution is : " << sol18v1() << "\n";
+	std::cout << "Solution is : " << sol18v2() << "\n";
 }
