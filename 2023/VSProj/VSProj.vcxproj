@@ -126,6 +126,7 @@
     <ClCompile Include="Solution\J13v2.cpp" />
     <ClCompile Include="Solution\J15v1.cpp" />
     <ClCompile Include="Solution\J15v2.cpp" />
+    <ClCompile Include="Solution\J18v1.cpp" />
     <ClCompile Include="solution\J1v1.cpp" />
     <ClCompile Include="solution\J1v2.cpp" />
     <ClCompile Include="solution\J2v1.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="solution\J1.h" />
     <ClInclude Include="Solution\J13.h" />
     <ClInclude Include="Solution\J15.h" />
+    <ClInclude Include="Solution\J18.h" />
     <ClInclude Include="solution\J2.h" />
     <ClInclude Include="solution\J3.h" />
     <ClInclude Include="solution\J4.h" />
