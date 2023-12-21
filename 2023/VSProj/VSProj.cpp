@@ -9,10 +9,11 @@
 #include "Solution/J8.h"
 #include "Solution/J9.h"
 #include "Solution/J13.h"
+#include "Solution/J14.h"
 #include "Solution/J15.h"
 #include "Solution/J18.h"
 
 int main()
 {
-	std::cout << "Solution is : " << sol18v2() << "\n";
+	std::cout << "Solution is : " << sol14v1() << "\n";
 }
