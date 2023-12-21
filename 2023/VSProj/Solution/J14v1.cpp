@@ -10,10 +10,7 @@ string sol14v1()
 
 	int load = 0;
 
-	pair<int, int> direction(-1, 0); // -1 / -1
-	pair<int, int> direction(0, -1); // +1 / -1
-	pair<int, int> direction(1, 0);  // +1 / +1 
-	pair<int, int> direction(0, 1);  // -1 / +1
+	pair<int, int> direction(-1, 0);
 	for (size_t lineIndex = 0; lineIndex < lines.size(); lineIndex++)
 	{
 		string line = lines[lineIndex];
