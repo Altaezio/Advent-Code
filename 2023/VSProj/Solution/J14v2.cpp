@@ -7,12 +7,13 @@ using namespace std;
 
 string sol14v2()
 {
-	vector<string> lines = getSolutionLines("test");
+	vector<string> lines = getSolutionLines("J14");
 
 	int load = 0;
 
 	vector<pair<size_t, size_t>> rocks;
-	vector<int> patternValue;
+	vector<vector<pair<size_t, size_t>>> patterns;
+	vector<int> patternValues;
 	for (size_t lineIndex = 0; lineIndex < lines.size(); lineIndex++)
 	{
 		string line = lines[lineIndex];
@@ -31,27 +32,28 @@ string sol14v2()
 	const size_t cycleToDo = 1000000000;
 	for (size_t cycle = 0; cycle < cycleToDo; cycle++)
 	{
+		int tiltValue = 0;
 		for (size_t tilt = 0; tilt < 4; tilt++)
 		{
+			tiltValue = 0;
 			pair<int, int> direction = directions[tilt];
 
 			switch (tilt)
 			{
 			case 0:
-				sort(rocks.begin(), rocks.end(), [](pair<size_t, size_t> a, pair<size_t, size_t> b) {return a.first < b.first; });
+				sort(rocks.begin(), rocks.end(), [](pair<size_t, size_t> a, pair<size_t, size_t> b) {return a.first < b.first || (a.first == b.first && a.second < b.second); });
 				break;
 			case 1:
-				sort(rocks.begin(), rocks.end(), [](pair<size_t, size_t> a, pair<size_t, size_t> b) {return a.second < b.second; });
+				sort(rocks.begin(), rocks.end(), [](pair<size_t, size_t> a, pair<size_t, size_t> b) {return a.second < b.second || (a.first == b.first && b.first < a.first); });
 				break;
 			case 2:
-				sort(rocks.begin(), rocks.end(), [](pair<size_t, size_t> a, pair<size_t, size_t> b) {return b.first < a.first; });
+				sort(rocks.begin(), rocks.end(), [](pair<size_t, size_t> a, pair<size_t, size_t> b) {return b.first < a.first || (a.first == b.first && b.second < a.second); });
 				break;
 			case 3:
-				sort(rocks.begin(), rocks.end(), [](pair<size_t, size_t> a, pair<size_t, size_t> b) {return b.second < a.second; });
+				sort(rocks.begin(), rocks.end(), [](pair<size_t, size_t> a, pair<size_t, size_t> b) {return b.second < a.second || (a.first == b.first && b.first < a.first); });
 				break;
 			}
 
-			int tiltValue = 0;
 			for (size_t rockIndex = 0; rockIndex < rocks.size(); rockIndex++)
 			{
 				pair<size_t, size_t> rock = rocks[rockIndex];
@@ -64,10 +66,20 @@ string sol14v2()
 				}
 				tiltValue += lines.size() - firstEmpty.first;
 			}
-			// TODO
-			patternValue.push_back(tiltValue);
-			load += tiltValue;
 		}
+
+		auto patternIt = find(patterns.begin(), patterns.end(), rocks);
+		if (patternIt != patterns.end())
+		{
+			size_t matchingElemIndex = patternIt - patterns.begin();
+			size_t lastElemIndex = matchingElemIndex + ((cycleToDo - (cycle + 1)) % (patterns.size() - matchingElemIndex));
+			load = patternValues[lastElemIndex];
+			return to_string(load);
+		}
+
+		patterns.push_back(rocks);
+		patternValues.push_back(tiltValue);
+
 	}
-	return to_string(load);
+	return "Made all the way through, might have been long. Answer is : " + to_string(patternValues.back());
 }
