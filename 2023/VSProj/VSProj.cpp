@@ -12,6 +12,8 @@
 #include "Solution/J14.h"
 #include "Solution/J15.h"
 #include "Solution/J18.h"
+#include "Solution/Visualiser/Application.h"
+
 
 int main()
 {

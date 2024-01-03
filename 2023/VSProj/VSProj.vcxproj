@@ -146,6 +146,7 @@
     <ClCompile Include="solution\J8v2.cpp" />
     <ClCompile Include="solution\J9v1.cpp" />
     <ClCompile Include="Solution\J9v2.cpp" />
+    <ClCompile Include="Solution\Visualiser\Application.cpp" />
     <ClCompile Include="VSProj.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +163,7 @@
     <ClInclude Include="solution\J7.h" />
     <ClInclude Include="solution\J8.h" />
     <ClInclude Include="solution\J9.h" />
+    <ClInclude Include="Solution\Visualiser\Application.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
