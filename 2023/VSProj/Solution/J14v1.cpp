@@ -11,6 +11,14 @@ string sol14v1()
 	int load = 0;
 
 	pair<int, int> direction(-1, 0);
+	load += tiltInDirection(lines, direction);
+	coutList(lines);
+	return to_string(load);
+}
+
+int tiltInDirection(std::vector<std::string>& lines, std::pair<int, int> direction)
+{
+	int load = 0;
 	for (size_t lineIndex = 0; lineIndex < lines.size(); lineIndex++)
 	{
 		string line = lines[lineIndex];
@@ -29,8 +37,7 @@ string sol14v1()
 			}
 		}
 	}
-	coutList(lines);
-	return to_string(load);
+	return load;
 }
 
 pair<size_t, size_t> findFirstEmpty(vector<string>& lines, pair<size_t, size_t> start, pair<int, int> direction)
