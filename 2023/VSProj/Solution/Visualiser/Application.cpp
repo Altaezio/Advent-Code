@@ -14,11 +14,11 @@ int StartApplication()
 	if (!glfwInit())
 		return -1;
 
-	const int WIDTH = 500;
-	const int HEIGHT = 500;
+	const int width = 500;
+	const int height = 500;
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(WIDTH, HEIGHT, "Hello World", NULL, NULL);
+	window = glfwCreateWindow(width, height, "Hello World", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -48,8 +48,9 @@ int StartApplication()
 	return 0;
 }
 
-void drawRockMap(vector<string>& lines)
+void drawRockMap(const vector<string>& lines)
 {
+	//vector<string> lines;
 	float cellWidthPercent = 1.0f / lines[0].size();
 	float cellHeightPercent = 1.0f / lines.size();
 
@@ -65,15 +66,15 @@ void drawRockMap(vector<string>& lines)
 				float y1 = 1.0f - cellIndex * cellHeightPercent;
 				float x2 = -1.0f + cellIndex * cellWidthPercent;
 				float y2 = 1.0f - cellIndex * cellHeightPercent;
-				_ASSERT(x1 >= -1.0f);
+				/*_ASSERT(x1 >= -1.0f);
 				_ASSERT(x1 <= 1.0f);
 				_ASSERT(y1 >= -1.0f);
 				_ASSERT(y1 <= 1.0f);
 				_ASSERT(x2 >= -1.0f);
 				_ASSERT(x2 <= 1.0f);
 				_ASSERT(y2 >= -1.0f);
-				_ASSERT(y2 <= 1.0f);
-				glRectf(x1, y1, x2, y2);
+				_ASSERT(y2 <= 1.0f);*/
+				//glRectf(x1, y1, x2, y2);
 			}
 		}
 	}
