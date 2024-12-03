@@ -1,6 +1,5 @@
 #include "../FileHandler.h"
 #include <iostream>
-//#include <algorithm>
 #include "J2.h"
 
 using namespace std;
