@@ -1,6 +1,6 @@
 #include "Window.h"
 #include <iostream>
-#include "../../FileHandler.h"
+#include <FileHandler.h>
 
 using namespace std;
 

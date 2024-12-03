@@ -1,4 +1,4 @@
-#include "../FileHandler.h"
+#include <FileHandler.h>
 #include <iostream>
 #include <algorithm>
 #include "J1.h"
