@@ -128,23 +128,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\CPP_Utils\FileHandler.cpp" />
-    <ClCompile Include="Solution\J1v1.cpp" />
+    <ClCompile Include="Solution\**\*.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Solution\J1v2.cpp" />
-    <ClCompile Include="Solution\J2v1.cpp" />
-    <ClCompile Include="Solution\J2v2.cpp" />
-    <ClCompile Include="Solution\J3v1.cpp" />
-    <ClCompile Include="Solution\J3v2.cpp" />
-    <ClCompile Include="solution\visualiser\Application.cpp" />
-    <ClCompile Include="solution\visualiser\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\CPP_Utils\include\FileHandler.h" />
-    <ClInclude Include="Solution\J1.h" />
-    <ClInclude Include="Solution\J2.h" />
-    <ClInclude Include="Solution\J3.h" />
-    <ClInclude Include="solution\visualiser\Application.h" />
-    <ClInclude Include="solution\visualiser\Window.h" />
+    <ClInclude Include="Solution\**\*.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -4,9 +4,9 @@
 
 using namespace std;
 
-string sol2v2()
+string sol02v2(string solutionFileName)
 {
-	vector<string> lines = getSolutionLines("J2");
+	vector<string> lines = getSolutionLines(solutionFileName);
 	int safeReports = 0;
 	for (string line : lines)
 	{

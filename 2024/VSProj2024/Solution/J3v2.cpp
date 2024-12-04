@@ -5,9 +5,9 @@
 
 using namespace std;
 
-string sol3v2()
+string sol03v2(string solutionFileName)
 {
-	vector<string> lines = getSolutionLines("J3");
+	vector<string> lines = getSolutionLines(solutionFileName);
 	int sum = 0;
 	bool enable = true;
 	for (string line : lines)

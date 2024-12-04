@@ -5,9 +5,9 @@
 
 using namespace std;
 
-string sol1v1()
+string sol01v1(string solutionFileName)
 {
-	vector<string> lines = getSolutionLines("J1");
+	vector<string> lines = getSolutionLines(solutionFileName);
 	vector<int> a;
 	vector<int> b;
 	for (string line : lines)
