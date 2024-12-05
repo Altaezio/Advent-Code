@@ -18,60 +18,18 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="solution\visualiser\Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="solution\visualiser\Window.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Solution\J1v1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Solution\J1v2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Solution\J2v1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Solution\J2v2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Solution\J3v1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Solution\J3v2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClInclude Include="Solution\**\*.cpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClCompile Include="..\..\CPP_Utils\FileHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Solution\J04v1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Solution\J04v2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="solution\visualiser\Application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="solution\visualiser\Window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Solution\J1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Solution\J2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Solution\J3.h">
+    <ClInclude Include="Solution\**\*.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\CPP_Utils\include\FileHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Solution\J04.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

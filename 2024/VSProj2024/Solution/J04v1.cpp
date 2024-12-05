@@ -2,6 +2,7 @@
 #include <iostream>
 #include <numbers>
 #include "J04.h"
+
 using namespace std;
 
 string sol04v1(string solutionFileName)

@@ -1,6 +1,7 @@
 #include <FileHandler.h>
 #include <iostream>
 #include "J04.h"
+
 using namespace std;
 
 string sol04v2(string solutionFileName)
