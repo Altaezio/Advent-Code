@@ -1,19 +1,20 @@
 #include <FileHandler.h>
 #include <iostream>
 #include <algorithm>
+#include <map>
 #include "J05.h"
 
 using namespace std;
 
 struct PagesComparator
 {
-	PagesComparator(vector<vector<int>>* rules) :rules(rules) {}
-	vector<vector<int>>* rules;
+	PagesComparator(map<int, vector<int>>* rules) :rules(rules) {}
+	map<int, vector<int>>* rules;
 	bool operator()(const int& a, const int& b) const
 	{
-		for (vector<int> rule : *rules)
+		for (int after : (*rules)[a])
 		{
-			if (rule[0] == a && rule[1] == b)
+			if (after == b)
 			{
 				return true;
 			}
@@ -25,7 +26,7 @@ struct PagesComparator
 string sol05v2(string solutionFileName)
 {
 	vector<string> lines = getSolutionLines(solutionFileName);
-	vector<vector<int>> orderingRules;
+	map<int, vector<int>> orderingRules;
 	bool pageOrdering = true;
 	int sum = 0;
 	vector<vector<int>> unorderedUpdates;
@@ -39,7 +40,8 @@ string sol05v2(string solutionFileName)
 		if (pageOrdering)
 		{
 			replace(line.begin(), line.end(), '|', ' ');
-			orderingRules.push_back(ExtractInt(line));
+			vector<int> rule = ExtractInt(line);
+			orderingRules[rule[0]].push_back(rule[1]);
 			continue;
 		}
 

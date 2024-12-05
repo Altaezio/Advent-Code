@@ -1,6 +1,7 @@
 #include <FileHandler.h>
 #include <iostream>
 #include <algorithm>
+#include <map>
 #include "J05.h"
 
 using namespace std;
@@ -8,7 +9,7 @@ using namespace std;
 string sol05v1(string solutionFileName)
 {
 	vector<string> lines = getSolutionLines(solutionFileName);
-	vector<vector<int>> orderingRules;
+	map<int, vector<int>> orderingRules;
 	bool pageOrdering = true;
 	int sum = 0;
 	for (string line : lines)
@@ -21,7 +22,8 @@ string sol05v1(string solutionFileName)
 		if (pageOrdering)
 		{
 			replace(line.begin(), line.end(), '|', ' ');
-			orderingRules.push_back(ExtractInt(line));
+			vector<int> rule = ExtractInt(line);
+			orderingRules[rule[0]].push_back(rule[1]);
 			continue;
 		}
 
@@ -36,31 +38,19 @@ string sol05v1(string solutionFileName)
 	return to_string(sum);
 }
 
-bool UpdateIsInOrder(vector<vector<int>>& rules, vector<int>& update)
+bool UpdateIsInOrder(map<int, vector<int>>& rules, vector<int>& update)
 {
 	for (size_t pageInd = 0; pageInd < update.size(); pageInd++)
 	{
 		int page = update[pageInd];
-		for (vector<int> rule : rules)
+		vector<int> pageRules = rules[page];
+		for (int after : pageRules)
 		{
-			if (rule[0] == page)
+			for (size_t otherInd = 0; otherInd < pageInd; otherInd++)
 			{
-				for (size_t otherInd = 0; otherInd < pageInd; otherInd++)
+				if (update[otherInd] == after)
 				{
-					if (update[otherInd] == rule[1])
-					{
-						return false;
-					}
-				}
-			}
-			else if (rule[1] == page)
-			{
-				for (size_t otherInd = pageInd + 1; otherInd < update.size(); otherInd++)
-				{
-					if (update[otherInd] == rule[0])
-					{
-						return false;
-					}
+					return false;
 				}
 			}
 		}
