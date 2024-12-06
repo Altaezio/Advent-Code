@@ -58,12 +58,19 @@ void Window::ShowJ06()
 		glRectf(x1, y1, x2, y2);
 	}
 
-	float x1 = -1.0f + 2 * currentPos[0] * cellWidthPercent;
-	float y1 = 1.0f - 2 * currentPos[1] * cellHeightPercent;
-	float x2 = -1.0f + 2 * (currentPos[0] + 1) * cellWidthPercent;
-	float y2 = 1.0f - 2 * (currentPos[1] + 1) * cellHeightPercent;
+	glBegin(GL_TRIANGLES);
+	float x1 = -1.0f + 2 * ((direction[0] == -1) ? currentPos[0] + 1 : currentPos[0]) * cellWidthPercent;
+	float x2 = -1.0f + 2 * ((direction[0] == 1 ? currentPos[0] + 1 : currentPos[0]) + 0.5f * abs(direction[1])) * cellWidthPercent;
+	float x3 = -1.0f + 2 * (direction[0] == 1 ? currentPos[0] : currentPos[0] + 1) * cellWidthPercent;
+	float y1 = 1.0f - 2 * (direction[0] + direction[1] < 0 ? currentPos[1] + 1 : currentPos[1]) * cellHeightPercent;
+	float y2 = 1.0f - 2 * ((direction[1] == 1 ? currentPos[1] + 1 : currentPos[1]) + 0.5f * abs(direction[0])) * cellWidthPercent;
+	float y3 = 1.0f - 2 * (direction[1] == -1 || direction[0] == 1 ? currentPos[1] + 1 : currentPos[1]) * cellHeightPercent;
+	
 	glColor3f(.0f, .0f, 1.0f); // blue
-	glRectf(x1, y1, x2, y2);
+	glVertex2f(x1, y1);
+	glVertex2f(x2, y2);
+	glVertex2f(x3, y3);
+	glEnd();
 }
 
 void Window::ProcessJ06(bool solveAll)
