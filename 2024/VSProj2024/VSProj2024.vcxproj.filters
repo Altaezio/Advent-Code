@@ -19,7 +19,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClInclude Include="Solution\**\*.cpp">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClInclude>
     <ClCompile Include="..\..\CPP_Utils\FileHandler.cpp">
       <Filter>Source Files</Filter>

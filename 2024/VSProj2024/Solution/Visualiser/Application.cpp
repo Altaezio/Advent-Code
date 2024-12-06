@@ -7,7 +7,7 @@ using namespace std;
 
 int StartApplication()
 {
-	Window* myWindow = Window::GetInstance();
+	Window* myWindow = Window::GetInstance("test");
 
 	/* Initialize the library */
 	if (!glfwInit())
@@ -36,7 +36,7 @@ int StartApplication()
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		myWindow->drawRockMap();
+		myWindow->ShowJ06();
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
@@ -55,20 +55,28 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	{
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 	}
+	if (key == GLFW_KEY_SPACE && (action == GLFW_PRESS || action == GLFW_REPEAT))
+	{
+		Window::GetInstance("test")->ProcessJ06(false);
+	}
+	if (key == GLFW_KEY_ENTER && action == GLFW_PRESS)
+	{
+		Window::GetInstance("test")->ProcessJ06(true);
+	}
 	if (key == GLFW_KEY_UP && action == GLFW_RELEASE)
 	{
-		Window::GetInstance()->tilt(0); // north
+		//Window::GetInstance()->tilt(0); // north
 	}
 	if (key == GLFW_KEY_DOWN && action == GLFW_RELEASE)
 	{
-		Window::GetInstance()->tilt(2); // south
+		//Window::GetInstance()->tilt(2); // south
 	}
 	if (key == GLFW_KEY_LEFT && action == GLFW_RELEASE)
 	{
-		Window::GetInstance()->tilt(1); // west
+		//Window::GetInstance()->tilt(1); // west
 	}
 	if (key == GLFW_KEY_RIGHT && action == GLFW_RELEASE)
 	{
-		Window::GetInstance()->tilt(3); // est
+		//Window::GetInstance()->tilt(3); // est
 	}
 }

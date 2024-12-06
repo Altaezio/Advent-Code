@@ -1,16 +1,18 @@
 #include <iostream>
 #include <chrono>
+#include "Solution/Visualiser/Application.h"
 #include "Solution/J1.h"
 #include "Solution/J2.h"
 #include "Solution/J3.h"
 #include "Solution/J04.h"
 #include "Solution/J05.h"
+#include "Solution/J06.h"
 
 int main()
 {
-	auto solv1 = sol05v1;
-	auto solv2 = sol05v2;
-	std::string fileName = "J5";
+	auto solv1 = sol06v1;
+	auto solv2 = sol06v2;
+	std::string fileName = "J6";
 
 	std::cout << "=== " << fileName << " ===" << std::endl;
 	auto startTest1 = std::chrono::steady_clock::now();
@@ -33,4 +35,6 @@ int main()
 	auto endReal2 = std::chrono::steady_clock::now();
 	diff = endReal2 - endTest2;
 	std::cout << "in " << std::chrono::duration<double, std::milli>(diff).count() << "ms" << std::endl;
+
+	StartApplication();
 }
