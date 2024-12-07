@@ -7,12 +7,13 @@
 #include "Solution/J04.h"
 #include "Solution/J05.h"
 #include "Solution/J06.h"
+#include "Solution/J07.h"
 
 int main()
 {
-	auto solv1 = sol06v1;
-	auto solv2 = sol06v2;
-	std::string fileName = "J6";
+	auto solv1 = sol07v1;
+	auto solv2 = sol07v2;
+	std::string fileName = "J7";
 
 	std::cout << "=== " << fileName << " ===" << std::endl;
 	auto startTest1 = std::chrono::steady_clock::now();
@@ -36,5 +37,5 @@ int main()
 	diff = endReal2 - endTest2;
 	std::cout << "in " << std::chrono::duration<double, std::milli>(diff).count() << "ms" << std::endl;
 
-	StartApplication();
+	//StartApplication();
 }
