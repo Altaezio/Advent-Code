@@ -8,12 +8,13 @@
 #include "Solution/J05.h"
 #include "Solution/J06.h"
 #include "Solution/J07.h"
+#include "Solution/J08.h"
 
 int main()
 {
-	auto solv1 = sol07v1;
-	auto solv2 = sol07v2;
-	std::string fileName = "J7";
+	auto solv1 = sol08v1;
+	auto solv2 = sol08v2;
+	std::string fileName = "J8";
 
 	std::cout << "=== " << fileName << " ===" << std::endl;
 	auto startTest1 = std::chrono::steady_clock::now();
