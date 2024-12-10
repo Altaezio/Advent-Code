@@ -14,6 +14,8 @@ public:
 	void ShowJ06();
 	void ProcessJ06(bool solveAll);
 
+	void ShowJ10();
+
 private:
 	Window(std::string fileName);
 	~Window();

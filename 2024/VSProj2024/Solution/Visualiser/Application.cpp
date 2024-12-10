@@ -5,9 +5,9 @@
 
 using namespace std;
 
-int StartApplication()
+int StartApplication(string fileName)
 {
-	Window* myWindow = Window::GetInstance("test");
+	Window* myWindow = Window::GetInstance(fileName);
 
 	/* Initialize the library */
 	if (!glfwInit())
@@ -36,7 +36,7 @@ int StartApplication()
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		myWindow->ShowJ06();
+		myWindow->ShowJ10();
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);

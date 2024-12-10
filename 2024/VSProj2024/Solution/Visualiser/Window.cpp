@@ -65,7 +65,7 @@ void Window::ShowJ06()
 	float y1 = 1.0f - 2 * (direction[0] + direction[1] < 0 ? currentPos[1] + 1 : currentPos[1]) * cellHeightPercent;
 	float y2 = 1.0f - 2 * ((direction[1] == 1 ? currentPos[1] + 1 : currentPos[1]) + 0.5f * abs(direction[0])) * cellWidthPercent;
 	float y3 = 1.0f - 2 * (direction[1] == -1 || direction[0] == 1 ? currentPos[1] + 1 : currentPos[1]) * cellHeightPercent;
-	
+
 	glColor3f(.0f, .0f, 1.0f); // blue
 	glVertex2f(x1, y1);
 	glVertex2f(x2, y2);
@@ -102,6 +102,40 @@ void Window::ProcessJ06(bool solveAll)
 		currentPos[0] >= lines[currentPos[1]].size())
 	{
 		cout << "Out of the map" << endl;
+	}
+}
+
+void Window::ShowJ10()
+{
+	if (lines.size() <= 0)
+	{
+		return;
+	}
+
+	float cellWidthPercent = 1.00f / lines[0].size();
+	float cellHeightPercent = 1.00f / lines.size();
+
+	vector<float> color0{ 0.0f,0.1f,0.8f };
+	vector<float> color9{ 0.8f,0.6f,0.5f };
+
+	for (size_t lineIndex = 0; lineIndex < lines.size(); lineIndex++)
+	{
+		string line = lines[lineIndex];
+		for (size_t cellIndex = 0; cellIndex < line.size(); cellIndex++)
+		{
+			float x1 = -1.0f + 2 * cellIndex * cellWidthPercent;
+			float y1 = 1.0f - 2 * lineIndex * cellHeightPercent;
+			float x2 = -1.0f + 2 * (cellIndex + 1) * cellWidthPercent;
+			float y2 = 1.0f - 2 * (lineIndex + 1) * cellHeightPercent;
+
+			float t = (float)(line[cellIndex] - '0') / ('9' - '0');
+			vector<float> color(3, 0.0f);
+			for (size_t i = 0; i < 3; i++)
+				color[i] = lerp(color0[i], color9[i], t);
+			glColor3f(color[0], color[1], color[2]);
+
+			glRectf(x1, y1, x2, y2);
+		}
 	}
 }
 

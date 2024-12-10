@@ -3,7 +3,7 @@
 #include <vector>
 #include <GLFW/glfw3.h>
 
-int StartApplication();
+int StartApplication(std::string fileName);
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
