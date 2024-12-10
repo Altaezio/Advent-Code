@@ -7,7 +7,6 @@ using namespace std;
 string sol10v2(string solutionFileName)
 {
 	vector<string> lines = getSolutionLines(solutionFileName);
-	vector<vector<EdgeNode>> graph = MakeGraph(lines);
 	size_t sum = 0;
 	for (size_t y = 0; y < lines.size(); y++)
 	{
@@ -16,24 +15,24 @@ string sol10v2(string solutionFileName)
 		{
 			if (line[x] == '0')
 			{
-				sum += Find9_Rec(graph, { x,y });
+				sum += Find9_Rec(lines, { x,y });
 			}
 		}
 	}
 	return to_string(sum);
 }
 
-size_t Find9_Rec(vector<vector<EdgeNode>>& graph, vector<size_t> start)
+size_t Find9_Rec(vector<string>& lines, vector<size_t> start)
 {
-	if (graph[start[1]][start[0]].height == '9')
+	if (lines[start[1]][start[0]] == '9')
 	{
 		return 1;
 	}
 
 	size_t sum = 0;
-	for (EdgeNode* n : GetNeighbors(graph, start))
+	for (vector<size_t> nPos : GetNeighbors(lines, start))
 	{
-		sum += Find9_Rec(graph, n->pos);
+		sum += Find9_Rec(lines, nPos);
 	}
 	return sum;
 }
