@@ -56,3 +56,14 @@ vector<long long> Extractll(const string& Text) {
 
 	return numbers;
 }
+
+vector<unsigned long long> Extractull(const string& Text) {
+	vector<unsigned long long> numbers;
+	stringstream ss(Text);
+	string Buf;
+
+	while (ss >> Buf)
+		numbers.push_back(stoull(Buf));
+
+	return numbers;
+}

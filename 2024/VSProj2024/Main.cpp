@@ -11,12 +11,13 @@
 #include "Solution/J08.h"
 #include "Solution/J09.h"
 #include "Solution/J10.h"
+#include "Solution/J11.h"
 
 int main()
 {
-	auto solv1 = sol10v1;
-	auto solv2 = sol10v2;
-	std::string fileName = "J10";
+	auto solv1 = sol11v1;
+	auto solv2 = sol11v2;
+	std::string fileName = "J11";
 
 	std::cout << "=== " << fileName << " ===" << std::endl;
 	auto startTest1 = std::chrono::steady_clock::now();
@@ -40,5 +41,5 @@ int main()
 	diff = endReal2 - endTest2;
 	std::cout << "in " << std::chrono::duration<double, std::milli>(diff).count() << "ms" << std::endl;
 
-	StartApplication(fileName);
+	//StartApplication(fileName);
 }
