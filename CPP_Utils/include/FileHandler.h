@@ -7,10 +7,14 @@ std::vector<std::string> getSolutionLines(std::string pathToFile);
 
 void coutList(std::vector<std::string> list);
 
-std::vector<std::string> Extract(const std::string& Text);
+std::vector<std::string> Extract(const std::string& text);
 
-std::vector<int> ExtractInt(const std::string& Text);
+std::vector<int> ExtractInt(const std::string& text);
 
-std::vector<long long> Extractll(const std::string& Text);
+std::vector<long long> Extractll(const std::string& text);
 
-std::vector<unsigned long long> Extractull(const std::string& Text);
+std::vector<unsigned long long> Extractull(const std::string& text);
+
+std::vector<unsigned long long> ExtractullAmongOther(const std::string& text);
+
+std::vector<long long> ExtractllAmongOther(const std::string& text);

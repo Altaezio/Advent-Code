@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <regex>
 
 using namespace std;
 
@@ -66,4 +67,32 @@ vector<unsigned long long> Extractull(const string& Text) {
 		numbers.push_back(stoull(Buf));
 
 	return numbers;
+}
+
+vector<unsigned long long> ExtractullAmongOther(const string& text)
+{
+	regex num(R"([\d]+)");
+	auto numBegin = sregex_iterator(text.begin(), text.end(), num);
+	auto numEnd = sregex_iterator();
+	vector<unsigned long long> nums;
+	for (sregex_iterator it = numBegin; it != numEnd; it++)
+	{
+		string matchStr = it->str();
+		nums.push_back(stoull(matchStr));
+	}
+	return nums;
+}
+
+vector<long long> ExtractllAmongOther(const string& text)
+{
+	regex num(R"([\d]+)");
+	auto numBegin = sregex_iterator(text.begin(), text.end(), num);
+	auto numEnd = sregex_iterator();
+	vector<long long> nums;
+	for (sregex_iterator it = numBegin; it != numEnd; it++)
+	{
+		string matchStr = it->str();
+		nums.push_back(stoll(matchStr));
+	}
+	return nums;
 }
