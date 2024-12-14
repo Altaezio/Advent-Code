@@ -2,6 +2,7 @@
 #include <iostream>
 #include <FileHandler.h>
 #include "..\J06.h"
+#include "..\J14.h"
 
 using namespace std;
 
@@ -19,6 +20,8 @@ Window* Window::GetInstance(string fileName)
 	}
 	return Instance;
 }
+
+#pragma region J06
 
 void Window::ShowJ06()
 {
@@ -105,6 +108,10 @@ void Window::ProcessJ06(bool solveAll)
 	}
 }
 
+#pragma endregion
+
+#pragma region J10
+
 void Window::ShowJ10()
 {
 	if (lines.size() <= 0)
@@ -138,6 +145,70 @@ void Window::ShowJ10()
 		}
 	}
 }
+
+#pragma endregion
+
+#pragma region J14
+
+void Window::ShowJ14()
+{
+	if (currentRoom.size() <= 0)
+	{
+		return;
+	}
+
+	float cellWidthPercent = 1.00f / currentRoom[0].size();
+	float cellHeightPercent = 1.00f / currentRoom.size();
+
+	vector<float> color0{ 0.0f,0.0f,0.0f };
+	vector<float> colorMax{ 1.0f,1.0f,1.0f };
+
+	for (size_t lineIndex = 0; lineIndex < currentRoom.size(); lineIndex++)
+	{
+		vector<long long> line = currentRoom[lineIndex];
+		for (size_t cellIndex = 0; cellIndex < line.size(); cellIndex++)
+		{
+			float x1 = -1.0f + 2 * cellIndex * cellWidthPercent;
+			float y1 = 1.0f - 2 * lineIndex * cellHeightPercent;
+			float x2 = -1.0f + 2 * (cellIndex + 1) * cellWidthPercent;
+			float y2 = 1.0f - 2 * (lineIndex + 1) * cellHeightPercent;
+
+			float t = 0.0f;
+			if (line[cellIndex] != 0)
+			{
+				t = (float)(line[cellIndex]) / maxRobot;
+			}
+			vector<float> color(3, 0.0f);
+			for (size_t i = 0; i < 3; i++)
+				color[i] = lerp(color0[i], colorMax[i], t);
+			glColor3f(color[0], color[1], color[2]);
+
+			glRectf(x1, y1, x2, y2);
+		}
+	}
+}
+
+void Window::NextStepJ14()
+{
+	unsigned inQuads = 0;
+	vector<int> add{ 23,89 };
+	size_t currentLapse = 0;
+	if (ind % 2 == 0)
+	{
+		currentLapse = add[0] + ind * 101;
+	}
+	else
+	{
+		currentLapse = add[1] + ind * 103;
+	}
+	cout << "\r" << "l: " << currentLapse;
+	currentRoom = SolveForSeconds(lines, currentLapse, maxRobot, inQuads);
+	cout << " ; inQuads: " << inQuads;
+	ind++;
+}
+
+#pragma endregion
+
 
 Window::Window(string fileName) : window(), fileName(fileName)
 {

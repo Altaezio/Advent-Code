@@ -36,7 +36,7 @@ int StartApplication(string fileName)
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		myWindow->ShowJ10();
+		myWindow->ShowJ14();
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
@@ -57,11 +57,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 	if (key == GLFW_KEY_SPACE && (action == GLFW_PRESS || action == GLFW_REPEAT))
 	{
-		Window::GetInstance("test")->ProcessJ06(false);
+		//Window::GetInstance("test")->ProcessJ06(false);
+		Window::GetInstance("J14")->NextStepJ14();
 	}
 	if (key == GLFW_KEY_ENTER && action == GLFW_PRESS)
 	{
-		Window::GetInstance("test")->ProcessJ06(true);
+		//Window::GetInstance("test")->ProcessJ06(true);
 	}
 	if (key == GLFW_KEY_UP && action == GLFW_RELEASE)
 	{

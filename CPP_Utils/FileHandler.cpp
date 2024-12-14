@@ -85,7 +85,7 @@ vector<unsigned long long> ExtractullAmongOther(const string& text)
 
 vector<long long> ExtractllAmongOther(const string& text)
 {
-	regex num(R"([\d]+)");
+	regex num(R"((\\+|-)?[\d]+)");
 	auto numBegin = sregex_iterator(text.begin(), text.end(), num);
 	auto numEnd = sregex_iterator();
 	vector<long long> nums;

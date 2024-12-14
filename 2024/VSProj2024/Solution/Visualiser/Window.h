@@ -16,6 +16,9 @@ public:
 
 	void ShowJ10();
 
+	void ShowJ14();
+	void NextStepJ14();
+
 private:
 	Window(std::string fileName);
 	~Window();
@@ -27,6 +30,12 @@ private:
 	std::vector<int> currentPos{ -1,-1 };
 	std::vector<int> direction{ 0,-1 };
 	std::set<std::vector<int>> visited;
+	// --
+
+	// --J14 data--
+	int maxRobot = 0;
+	int ind = 0;
+	std::vector<std::vector<long long>> currentRoom;
 	// --
 
 	static Window* Instance;
