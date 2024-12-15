@@ -15,12 +15,13 @@
 #include "Solution/J12.h"
 #include "Solution/J13.h"
 #include "Solution/J14.h"
+#include "Solution/J15.h"
 
 int main()
 {
-	auto solv1 = sol14v1;
-	auto solv2 = sol14v2;
-	std::string fileName = "J14";
+	auto solv1 = sol15v1;
+	auto solv2 = sol15v2;
+	std::string fileName = "J15";
 
 	std::cout << "=== " << fileName << " ===" << std::endl;
 	auto startTest1 = std::chrono::steady_clock::now();

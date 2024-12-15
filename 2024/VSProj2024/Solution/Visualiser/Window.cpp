@@ -3,6 +3,7 @@
 #include <FileHandler.h>
 #include "..\J06.h"
 #include "..\J14.h"
+#include "..\J15.h"
 
 using namespace std;
 
@@ -208,6 +209,155 @@ void Window::NextStepJ14()
 }
 
 #pragma endregion
+
+#pragma region J15
+
+void Window::ShowJ15()
+{
+	if (currentMap.size() < 1)
+	{
+		return;
+	}
+
+
+	float cellWidthPercent = 1.00f / currentMap[0].size();
+	float cellHeightPercent = 1.00f / currentMap.size();
+
+	vector<float> wallColor{ 0.5f,0.5f,0.5f };
+	vector<float> robotColor{ 1.0f,1.0f,1.0f };
+	vector<float> createColor{ 0.75f,0.5f,0.0f };
+
+
+	for (size_t lineIndex = 0; lineIndex < currentMap.size(); lineIndex++)
+	{
+		string line = currentMap[lineIndex];
+		for (size_t cellIndex = 0; cellIndex < line.size(); cellIndex++)
+		{
+			float x1 = -1.0f + 2 * cellIndex * cellWidthPercent;
+			float y1 = 1.0f - 2 * lineIndex * cellHeightPercent;
+			float x2 = -1.0f + 2 * (cellIndex + 1) * cellWidthPercent;
+			float y2 = 1.0f - 2 * (lineIndex + 1) * cellHeightPercent;
+
+			vector<float> color(3, 0.0f);
+			if (line[cellIndex] == '#')
+			{
+				color = wallColor;
+			}
+			else if (line[cellIndex] == '.')
+			{
+				continue;
+			}
+			else if (line[cellIndex] == '@')
+			{
+				color = robotColor;
+			}
+			else if (line[cellIndex] == 'O' || line[cellIndex] == '[' || line[cellIndex] == ']')
+			{
+				color = createColor;
+			}
+			glColor3f(color[0], color[1], color[2]);
+
+			glRectf(x1, y1, x2, y2);
+		}
+	}
+}
+
+void Window::NextStepJ15v1()
+{
+	if (currentMap.size() == 0)
+	{
+		for (size_t y = 0; y < lines.size(); y++)
+		{
+			string line = lines[y];
+			if (line.size() < 2)
+			{
+				currentInstruction.push_back(0);
+				currentInstruction.push_back(y + 1);
+				break;
+			}
+			currentMap.push_back(line);
+			if (currentRobotPosition.size() == 0)
+			{
+				size_t start = line.find('@');
+				if (start != string::npos)
+				{
+					currentRobotPosition.push_back(start);
+					currentRobotPosition.push_back(y);
+				}
+			}
+		}
+	}
+	else if (currentInstruction[1] < lines.size())
+	{
+		currentRobotPosition = MoveRobotOrCreate(currentMap, currentRobotPosition, lines[currentInstruction[1]][currentInstruction[0]]);
+		currentInstruction[0]++;
+		if (currentInstruction[0] == lines[currentInstruction[1]].size())
+		{
+			currentInstruction[0] = 0;
+			currentInstruction[1]++;
+		}
+	}
+}
+void Window::NextStepJ15v2(bool solveAll)
+{
+	if (currentMap.size() == 0)
+	{
+		for (size_t y = 0; y < lines.size(); y++)
+		{
+			string line = lines[y];
+			if (line.size() < 2)
+			{
+				currentInstruction.push_back(0);
+				currentInstruction.push_back(y + 1);
+				break;
+			}
+			string newLine;
+			for (size_t x = 0; x < line.size(); x++)
+			{
+				if (lines[y][x] == '#')
+				{
+					newLine.append("##");
+				}
+				else if (lines[y][x] == 'O')
+				{
+					newLine.append("[]");
+				}
+				else if (lines[y][x] == '.')
+				{
+					newLine.append("..");
+				}
+				else if (lines[y][x] == '@')
+				{
+					newLine.append("@.");
+					currentRobotPosition.push_back(2 * x);
+					currentRobotPosition.push_back(y);
+				}
+			}
+			currentMap.push_back(newLine);
+		}
+		if (!solveAll)
+		{
+			return;
+		}
+	}
+	while (currentInstruction.size() != 0 && currentInstruction[1] < lines.size())
+	{
+		MoveRobotOrBigCreate(currentMap, currentRobotPosition, lines[currentInstruction[1]][currentInstruction[0]]);
+		currentInstruction[0]++;
+		if (currentInstruction[0] == lines[currentInstruction[1]].size())
+		{
+			currentInstruction[0] = 0;
+			currentInstruction[1]++;
+		}
+		if (!solveAll)
+		{
+			break;
+		}
+	}
+}
+
+#pragma endregion
+
 
 
 Window::Window(string fileName) : window(), fileName(fileName)

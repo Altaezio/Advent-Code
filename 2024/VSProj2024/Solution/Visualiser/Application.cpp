@@ -30,13 +30,29 @@ int StartApplication(string fileName)
 
 	glfwSetKeyCallback(window, key_callback);
 
+	double currentFrame = glfwGetTime();
+	double lastFrame = currentFrame;
+	double deltaTime;
+	double baseIteration = 100.01; // in seconds
+	double nextIteration = baseIteration;
+
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		myWindow->ShowJ14();
+		myWindow->ShowJ15();
+
+		currentFrame = glfwGetTime();
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
+		nextIteration -= deltaTime;
+		if (nextIteration < 0.0)
+		{
+			Window::GetInstance("J15")->NextStepJ15v2(false);
+			nextIteration += baseIteration;
+		}
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
@@ -58,7 +74,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_SPACE && (action == GLFW_PRESS || action == GLFW_REPEAT))
 	{
 		//Window::GetInstance("test")->ProcessJ06(false);
-		Window::GetInstance("J14")->NextStepJ14();
+		//Window::GetInstance("J14")->NextStepJ14();
+		Window::GetInstance("J15")->NextStepJ15v2(true);
 	}
 	if (key == GLFW_KEY_ENTER && action == GLFW_PRESS)
 	{
