@@ -75,7 +75,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	{
 		//Window::GetInstance("test")->ProcessJ06(false);
 		//Window::GetInstance("J14")->NextStepJ14();
-		Window::GetInstance("J15")->NextStepJ15v2(true);
+		Window::GetInstance("J15")->NextStepJ15v2(false);
 	}
 	if (key == GLFW_KEY_ENTER && action == GLFW_PRESS)
 	{

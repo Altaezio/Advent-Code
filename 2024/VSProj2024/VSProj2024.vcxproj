@@ -127,11 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\CPP_Utils\AStar.cpp" />
     <ClCompile Include="..\..\CPP_Utils\FileHandler.cpp" />
     <ClCompile Include="Solution\**\*.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\CPP_Utils\include\AStar.h" />
     <ClInclude Include="..\..\CPP_Utils\include\FileHandler.h" />
     <ClInclude Include="Solution\**\*.h" />
   </ItemGroup>

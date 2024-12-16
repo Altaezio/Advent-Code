@@ -16,21 +16,22 @@
 #include "Solution/J13.h"
 #include "Solution/J14.h"
 #include "Solution/J15.h"
+#include "Solution/J16.h"
 
 int main()
 {
-	auto solv1 = sol15v1;
-	auto solv2 = sol15v2;
-	std::string fileName = "J15";
+	auto solv1 = sol16v1;
+	auto solv2 = sol16v2;
+	std::string fileName = "J16";
 
 	std::cout << "=== " << fileName << " ===" << std::endl;
 	auto startTest1 = std::chrono::steady_clock::now();
-	std::cout << "TEST solution -1- is : " << solv1("test") << std::endl;
+	//std::cout << "TEST solution -1- is : " << solv1("test") << std::endl;
 	auto endTest1 = std::chrono::steady_clock::now();
 	auto diff = endTest1 - startTest1;
 	std::cout << "in " << std::chrono::duration<double, std::milli>(diff).count() << "ms" << std::endl;
 
-	std::cout << "REAL solution -1- is : " << solv1(fileName) << std::endl;
+	//std::cout << "REAL solution -1- is : " << solv1(fileName) << std::endl;
 	auto endReal1 = std::chrono::steady_clock::now();
 	diff = endReal1 - endTest1;
 	std::cout << "in " << std::chrono::duration<double, std::milli>(diff).count() << "ms" << std::endl;
@@ -45,5 +46,5 @@ int main()
 	diff = endReal2 - endTest2;
 	std::cout << "in " << std::chrono::duration<double, std::milli>(diff).count() << "ms" << std::endl;
 
-	StartApplication(fileName);
+	//StartApplication(fileName);
 }
