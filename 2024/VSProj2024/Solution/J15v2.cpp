@@ -50,13 +50,16 @@ string sol15v2(string solutionFileName)
 		{
 			for (char c : line)
 			{
-				MoveRobotOrBigCreate(currentMap, currentPos, c);
+				if (CanMoveRobotOrBigCreate(currentMap, currentPos, c))
+				{
+					DoMoveRobotOrBigCreate(currentMap, currentPos, c);
+				}
 			}
 		}
 	}
-	
+
 	coutList(currentMap);
-	
+
 	size_t sum = 0;
 	for (size_t y = 0; y < currentMap.size(); y++)
 	{
@@ -71,10 +74,11 @@ string sol15v2(string solutionFileName)
 	return to_string(sum);
 }
 
-bool MoveRobotOrBigCreate(vector<string>& map, vector<size_t>& position, char direction, vector<size_t>* newPosOut)
+bool CanMoveRobotOrBigCreate(vector<string>& map, vector<size_t>& position, char direction)
 {
 	vector<size_t> newPos = position;
 	vector<size_t> posLeft = position;
+	vector<size_t> posRight = position;
 	bool positionIsCreate = false;
 	vector<size_t> newPosLeft = newPos;
 	vector<size_t> newPosRight = newPos;
@@ -130,9 +134,10 @@ bool MoveRobotOrBigCreate(vector<string>& map, vector<size_t>& position, char di
 
 	if (map[newPosLeft[1]][newPosLeft[0]] == '#' || map[newPosRight[1]][newPosRight[0]] == '#')
 	{
-		if (newPosOut)
+		if (positionIsCreate)
 		{
-			*newPosOut = posLeft;
+			map[posLeft[1]][posLeft[0]] = '[';
+			map[posLeft[1]][posLeft[0] + 1] = ']';
 		}
 		return false;
 	}
@@ -141,38 +146,100 @@ bool MoveRobotOrBigCreate(vector<string>& map, vector<size_t>& position, char di
 	bool canMoveRight = true;
 	if (newLeftIsCreate)
 	{
-		vector<size_t> leftCreateInTheWayNewPos;
-		canMoveLeft = MoveRobotOrBigCreate(map, newPosLeft, direction, &leftCreateInTheWayNewPos);
-		map[leftCreateInTheWayNewPos[1]][leftCreateInTheWayNewPos[0]] = '[';
-		map[leftCreateInTheWayNewPos[1]][leftCreateInTheWayNewPos[0] + 1] = ']';
+		canMoveLeft = CanMoveRobotOrBigCreate(map, newPosLeft, direction);
 	}
 	if (canMoveLeft && newRightIsCreate)
 	{
-		vector<size_t> rightCreateInTheWayNewPos;
-		canMoveRight = MoveRobotOrBigCreate(map, newPosRight, direction, &rightCreateInTheWayNewPos);
-		map[rightCreateInTheWayNewPos[1]][rightCreateInTheWayNewPos[0]] = '[';
-		map[rightCreateInTheWayNewPos[1]][rightCreateInTheWayNewPos[0] + 1] = ']';
+		canMoveRight = CanMoveRobotOrBigCreate(map, newPosRight, direction);
 	}
-	if (canMoveLeft && canMoveRight)
+
+	if (positionIsCreate)
 	{
-		if (positionIsCreate)
-		{
-			if (newPosOut)
-			{
-				*newPosOut = newPosLeft;
-			}
-		}
-		else
-		{
-			map[newPos[1]][newPos[0]] = map[position[1]][position[0]];
-			map[position[1]][position[0]] = '.';
-			position = newPos;
-		}
-		return true;
+		map[posLeft[1]][posLeft[0]] = '[';
+		map[posLeft[1]][posLeft[0] + 1] = ']';
 	}
-	if (newPosOut)
-	{
-		*newPosOut = posLeft;
-	}
-	return false;
+	return canMoveLeft && canMoveRight;
 }
+
+void DoMoveRobotOrBigCreate(vector<string>& map, vector<size_t>& position, char direction)
+{
+	vector<size_t> newPos = position;
+	vector<size_t> posLeft = position;
+	vector<size_t> posRight = position;
+	bool positionIsCreate = false;
+	vector<size_t> newPosLeft = newPos;
+	vector<size_t> newPosRight = newPos;
+	if (map[position[1]][position[0]] == '[')
+	{
+		map[newPos[1]][newPos[0]] = '.';
+		map[newPos[1]][newPos[0] + 1] = '.';
+		newPosRight[0]++;
+		positionIsCreate = true;
+	}
+	else if (map[position[1]][position[0]] == ']')
+	{
+		map[newPos[1]][newPos[0]] = '.';
+		map[newPos[1]][newPos[0] - 1] = '.';
+		posLeft[0]--;
+		newPosLeft = posLeft;
+		positionIsCreate = true;
+	}
+	if (direction == '^')
+	{
+		newPos[1]--;
+		newPosLeft[1]--;
+		newPosRight[1]--;
+	}
+	else if (direction == 'v')
+	{
+		newPos[1]++;
+		newPosLeft[1]++;
+		newPosRight[1]++;
+	}
+	else if (direction == '<')
+	{
+		newPos[0]--;
+		newPosLeft[0]--;
+		newPosRight[0]--;
+	}
+	else if (direction == '>')
+	{
+		newPos[0]++;
+		newPosLeft[0]++;
+		newPosRight[0]++;
+	}
+	bool newLeftIsCreate = false;
+	bool newRightIsCreate = false;
+	if (map[newPosLeft[1]][newPosLeft[0]] == ']' || map[newPosLeft[1]][newPosLeft[0]] == '[')
+	{
+		newLeftIsCreate = true;
+	}
+	if (positionIsCreate && map[newPosRight[1]][newPosRight[0]] == '[')
+	{
+		newRightIsCreate = true;
+	}
+
+	bool canMoveLeft = true;
+	bool canMoveRight = true;
+	if (newLeftIsCreate)
+	{
+		DoMoveRobotOrBigCreate(map, newPosLeft, direction);
+	}
+	if (newRightIsCreate)
+	{
+		DoMoveRobotOrBigCreate(map, newPosRight, direction);
+	}
+
+	if (positionIsCreate)
+	{
+		map[newPosLeft[1]][newPosLeft[0]] = '[';
+		map[newPosLeft[1]][newPosLeft[0] + 1] = ']';
+	}
+	else
+	{
+		map[newPos[1]][newPos[0]] = map[position[1]][position[0]];
+		map[position[1]][position[0]] = '.';
+		position = newPos;
+	}
+}
+

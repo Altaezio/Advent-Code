@@ -342,7 +342,10 @@ void Window::NextStepJ15v2(bool solveAll)
 	}
 	while (currentInstruction.size() != 0 && currentInstruction[1] < lines.size())
 	{
-		MoveRobotOrBigCreate(currentMap, currentRobotPosition, lines[currentInstruction[1]][currentInstruction[0]]);
+		if (CanMoveRobotOrBigCreate(currentMap, currentRobotPosition, lines[currentInstruction[1]][currentInstruction[0]]))
+		{
+			DoMoveRobotOrBigCreate(currentMap, currentRobotPosition, lines[currentInstruction[1]][currentInstruction[0]]);
+		}
 		currentInstruction[0]++;
 		if (currentInstruction[0] == lines[currentInstruction[1]].size())
 		{
