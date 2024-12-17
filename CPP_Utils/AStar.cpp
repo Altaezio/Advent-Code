@@ -8,7 +8,7 @@ bool CompareNodeOnHeuristic(Node a, Node b)
 	return a.heuristic < b.heuristic;
 }
 
-vector<vector<size_t>> SimpleGetNeighbours(const vector<string>& map, const vector<size_t> pos)
+vector<vector<size_t>> SimpleGetNeighbours2D(const vector<string>& map, const vector<size_t> pos)
 {
 	vector<vector<size_t>> neighbours;
 	if (pos[0] > 0)

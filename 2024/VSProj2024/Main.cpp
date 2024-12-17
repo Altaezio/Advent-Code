@@ -26,12 +26,12 @@ int main()
 
 	std::cout << "=== " << fileName << " ===" << std::endl;
 	auto startTest1 = std::chrono::steady_clock::now();
-	//std::cout << "TEST solution -1- is : " << solv1("test") << std::endl;
+	std::cout << "TEST solution -1- is : " << solv1("test") << std::endl;
 	auto endTest1 = std::chrono::steady_clock::now();
 	auto diff = endTest1 - startTest1;
 	std::cout << "in " << std::chrono::duration<double, std::milli>(diff).count() << "ms" << std::endl;
 
-	//std::cout << "REAL solution -1- is : " << solv1(fileName) << std::endl;
+	std::cout << "REAL solution -1- is : " << solv1(fileName) << std::endl;
 	auto endReal1 = std::chrono::steady_clock::now();
 	diff = endReal1 - endTest1;
 	std::cout << "in " << std::chrono::duration<double, std::milli>(diff).count() << "ms" << std::endl;

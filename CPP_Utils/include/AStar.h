@@ -9,7 +9,7 @@ struct Node
 {
 	size_t dimensions = 2;
 	std::vector<size_t> position = std::vector<size_t>(dimensions, std::numeric_limits<size_t>::max());
-	std::vector<std::vector<size_t>> previous;
+	std::vector<std::vector<size_t>> previous{};
 	long long cost = std::numeric_limits<long long>::max();
 	long long heuristic = std::numeric_limits<long long>::max();
 	Node(size_t dimensions = 2) : dimensions(dimensions)
@@ -32,22 +32,23 @@ bool operator==(const Node& lhs, const Node& rhs)
 	return lhs.position == rhs.position && lhs.cost == rhs.cost;
 }
 
-std::vector<std::vector<size_t>> SimpleGetNeighbours(const std::vector<std::string>& map, const std::vector<size_t> pos);
+std::vector<std::vector<size_t>> SimpleGetNeighbours2D(const std::vector<std::string>& map, const std::vector<size_t> pos);
 
 bool CompareNodeOnHeuristic(Node a, Node b);
 
 template<class T>
 std::vector<T> GetShortestPath(
 	const std::vector<std::string>& currentMap,
-	std::vector<size_t> objective,
-	T start,
+	T& start,
+	T& objective,
+	bool (*IsAtObjective)(const T&, const T&),
 	T(*CreateNode)(
 		const std::vector<std::string>&,
 		std::vector<size_t>,
 		T&,
 		std::vector<size_t>,
 		std::vector<size_t>),
-	std::vector<std::vector<size_t>>(*GetNeighbours)(const std::vector<std::string>&, const std::vector<size_t>) = &SimpleGetNeighbours,
+	std::vector<std::vector<size_t>>(*GetNeighbours)(const std::vector<std::string>&, const std::vector<size_t>) = &SimpleGetNeighbours2D,
 	std::map<std::vector<size_t>, T>* closedListOut = nullptr,
 	bool visitAll = false)
 {
@@ -57,7 +58,6 @@ std::vector<T> GetShortestPath(
 	std::map<std::vector<size_t>, T> openList;
 	openList[start.position] = start;
 
-	T end;
 	while (!openList.empty())
 	{
 		std::vector<size_t> bestPos = openList.begin()->first;
@@ -70,18 +70,16 @@ std::vector<T> GetShortestPath(
 		}
 		T bestNode = openList[bestPos];
 		openList.erase(bestPos);
-		if (bestNode.position == objective)
+		if (IsAtObjective(objective, bestNode) && bestNode.cost <= objective.cost)
 		{
-			if (!closedList.contains(bestNode.position))
+			if (bestNode.cost < objective.cost)
 			{
-				closedList[bestNode.position] = {};
+				objective.previous.clear();
+				objective.cost = bestNode.cost;
 			}
-			closedList[bestNode.position] = bestNode;
-			if (closedListOut)
-			{
-				*closedListOut = closedList;
-			}
-			end = bestNode;
+
+			objective.previous.assign(bestNode.previous.begin(), bestNode.previous.end());
+
 			if (!visitAll)
 			{
 				break;
@@ -89,41 +87,45 @@ std::vector<T> GetShortestPath(
 		}
 		for (std::vector<size_t> n : GetNeighbours(currentMap, bestNode.position))
 		{
-			T neighbour = CreateNode(currentMap, n, bestNode, start.position, objective);
+			T neighbour = CreateNode(currentMap, n, bestNode, start.position, objective.position);
 
 			if (neighbour.cost == std::numeric_limits<long long>::max())
 			{
 				continue;
 			}
-			if (openList.contains(n))
+			if (openList.contains(neighbour.position))
 			{
-				if (openList[n].cost < neighbour.cost)
+				if (openList[neighbour.position].cost < neighbour.cost)
 				{
 					continue;
 				}
-				else if (openList[n].cost == neighbour.cost &&
-					find(openList[n].previous.begin(), openList[n].previous.end(), bestNode) == openList[n].previous.end())
+				else if (openList[neighbour.position].cost == neighbour.cost &&
+					find(openList[neighbour.position].previous.begin(), openList[neighbour.position].previous.end(), bestNode) == openList[neighbour.position].previous.end())
 				{
-					openList[n].previous.push_back(bestNode.position);
+					openList[neighbour.position].previous.push_back(bestNode.position);
 					continue;
 				}
 			}
-			if (closedList.contains(n))
+			if (closedList.contains(neighbour.position))
 			{
-				if (closedList[n].cost == neighbour.cost &&
-					find(closedList[n].previous.begin(), closedList[n].previous.end(), bestNode) == closedList[n].previous.end())
+				if (closedList[neighbour.position].cost == neighbour.cost &&
+					find(closedList[neighbour.position].previous.begin(), closedList[neighbour.position].previous.end(), bestNode) == closedList[neighbour.position].previous.end())
 				{
-					closedList[n].previous.push_back(bestNode.position);
+					closedList[neighbour.position].previous.push_back(bestNode.position);
 				}
 				continue;
 			}
-			openList[n] = neighbour;
+			openList[neighbour.position] = neighbour;
 		}
 		closedList[bestNode.position] = bestNode;
 	}
-	if (end.position[0] != std::numeric_limits<size_t>::max())
+	if (closedListOut)
 	{
-		return RebuildPath(currentMap, end, closedList, GetNeighbours);
+		*closedListOut = closedList;
+	}
+	if (objective.previous.size() != 0)
+	{
+		return RebuildPath(currentMap, objective, closedList, GetNeighbours);
 	}
 	else
 	{
@@ -143,10 +145,9 @@ std::vector<T> RebuildPath(
 	std::vector<T> path;
 	path.push_back(end);
 	T node = end;
-	std::vector<size_t> firstPrevious = node.previous[0];
-	while (firstPrevious[0] != std::numeric_limits<size_t>::max())
+	while (node.previous.size() > 0 && node.previous[0][0] != std::numeric_limits<size_t>::max())
 	{
-		T bestPrevious = visitedNodes[firstPrevious];
+		T bestPrevious = visitedNodes[node.previous[0]];
 		path.insert(path.begin(), bestPrevious);
 		node = bestPrevious;
 	}

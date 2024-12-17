@@ -56,3 +56,5 @@ DirectedNode CreateNode(
 	std::vector<size_t> end);
 
 size_t PaintPath(std::vector<std::string>& lines, std::map<std::vector<size_t>, DirectedNode>& visited, std::vector<size_t> pos);
+
+bool IsAtObjective(const DirectedNode& objective, const DirectedNode& node);

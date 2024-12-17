@@ -31,9 +31,11 @@ string sol16v2(string solutionFileName)
 		}
 	}
 	start.push_back(0);
-	DirectedNode startnode(start);
-	startnode.cost = 0;
-	startnode.heuristic = 0;
+	DirectedNode startNode(start);
+	startNode.cost = 0;
+	startNode.heuristic = 0;
+	DirectedNode endNode(end);
+	endNode.position.push_back(0);
 	map<char, long long> costs;
 	costs['#'] = numeric_limits<long long>::max();
 	costs['.'] = 1;
@@ -41,7 +43,7 @@ string sol16v2(string solutionFileName)
 	costs['S'] = numeric_limits<long long>::max();
 
 	map<vector<size_t>, DirectedNode> visited;
-	vector<DirectedNode> bestPath = GetShortestPath<DirectedNode>(lines, end, startnode, CreateNode, SimpleGetNeighbours, &visited, true);
+	vector<DirectedNode> bestPath = GetShortestPath<DirectedNode>(lines, startNode, endNode, IsAtObjective, CreateNode, SimpleGetNeighbours2D, &visited, true);
 	for (auto it = visited.begin(); it != visited.end(); it++)
 	{
 		lines[it->first[1]][it->first[0]] = '|';
@@ -65,7 +67,8 @@ string sol16v2(string solutionFileName)
 			previousChar = lines[n.position[1]][n.position[0]];
 		}
 	}
-	size_t seats = PaintPath(lines, visited, bestPath.back().position);
+	visited[endNode.position] = endNode;
+	size_t seats = PaintPath(lines, visited, endNode.position);
 	if (solutionFileName == "test")
 	{
 		coutList(lines);
@@ -76,9 +79,15 @@ string sol16v2(string solutionFileName)
 
 size_t PaintPath(vector<string>& lines, map<vector<size_t>, DirectedNode>& visited, vector<size_t> pos)
 {
-	size_t count = 1;
-	lines[pos[1]][pos[0]] = 'O';
-	for (auto it = visited[pos].previous.begin(); it != visited[pos].previous.end(); it++)
+	size_t count = 0;
+	if (lines[pos[1]][pos[0]] != 'O')
+	{
+		count = 1;
+		lines[pos[1]][pos[0]] = 'O';
+	}
+	vector<vector<size_t>> previous = visited[pos].previous;
+	visited.erase(pos);
+	for (auto it = previous.begin(); it != previous.end(); it++)
 	{
 		count += PaintPath(lines, visited, *it);
 	}
