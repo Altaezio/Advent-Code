@@ -25,9 +25,10 @@ void coutList(vector<string> list)
 	}
 }
 
-vector<string> Extract(const string& Text) {
+vector<string> Extract(const string& text) 
+{
 	vector<string> Words;
-	stringstream ss(Text);
+	stringstream ss(text);
 	string Buf;
 
 	while (ss >> Buf)
@@ -36,7 +37,24 @@ vector<string> Extract(const string& Text) {
 	return Words;
 }
 
-vector<int> ExtractInt(const string& Text) {
+vector<string> ExtractWithoutChar(const string& text, char charToRemove)
+{
+	vector<string> Words;
+	stringstream ss(text);
+	string Buf;
+
+	while (ss >> Buf)
+	{
+		Buf.erase(remove(Buf.begin(), Buf.end(), charToRemove), Buf.end());
+		Words.push_back(Buf);
+	}
+
+	return Words;
+}
+
+
+vector<int> ExtractInt(const string& Text) 
+{
 	vector<int> numbers;
 	stringstream ss(Text);
 	string Buf;
@@ -47,7 +65,8 @@ vector<int> ExtractInt(const string& Text) {
 	return numbers;
 }
 
-vector<long long> Extractll(const string& Text) {
+vector<long long> Extractll(const string& Text) 
+{
 	vector<long long> numbers;
 	stringstream ss(Text);
 	string Buf;
@@ -58,7 +77,8 @@ vector<long long> Extractll(const string& Text) {
 	return numbers;
 }
 
-vector<unsigned long long> Extractull(const string& Text) {
+vector<unsigned long long> Extractull(const string& Text) 
+{
 	vector<unsigned long long> numbers;
 	stringstream ss(Text);
 	string Buf;
