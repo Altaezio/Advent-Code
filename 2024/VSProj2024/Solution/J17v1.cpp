@@ -14,34 +14,34 @@ string sol17v1(string solutionFileName)
 
 	vector<long long> program = ExtractllAmongOther(lines[4]);
 
-	size_t pointer = 0;
 	string output;
-	while (pointer < program.size())
-	{
-		DoInstruction(registers, pointer, program[pointer], program[pointer + 1], output);
-	}
+	Solve(registers, program, output);
 
 	return output;
 }
-
-void DoInstruction(vector<long long>& registers, size_t& pointer, size_t opcode, size_t literalOperand, string& out)
+size_t GetCombOperand(vector<long long>& registers, size_t opcode, size_t literalOperand)
 {
 	size_t combOperand = literalOperand;
 	if (literalOperand == 4)
 	{
 		combOperand = registers[0];
 	}
-	if (literalOperand == 5)
+	else if (literalOperand == 5)
 	{
 		combOperand = registers[1];
 	}
-	if (literalOperand == 6)
+	else if (literalOperand == 6)
 	{
 		combOperand = registers[2];
 	}
+	return combOperand;
+}
+
+void DoInstruction(vector<long long>& registers, size_t& pointer, size_t opcode, size_t literalOperand, string& out)
+{
 	if (opcode == 0)
 	{
-		registers[0] = registers[0] / pow(2, combOperand);
+		registers[0] = (double)registers[0] / pow(2, GetCombOperand(registers, opcode, literalOperand));
 	}
 	else if (opcode == 1)
 	{
@@ -49,7 +49,7 @@ void DoInstruction(vector<long long>& registers, size_t& pointer, size_t opcode,
 	}
 	else if (opcode == 2)
 	{
-		registers[1] = combOperand % 8;
+		registers[1] = GetCombOperand(registers, opcode, literalOperand) % 8;
 	}
 	else if (opcode == 3 && registers[0] != 0)
 	{
@@ -66,15 +66,24 @@ void DoInstruction(vector<long long>& registers, size_t& pointer, size_t opcode,
 		{
 			out.append(",");
 		}
-		out.append(to_string(combOperand % 8));
+		out.append(to_string(GetCombOperand(registers, opcode, literalOperand) % 8));
 	}
 	else if (opcode == 6)
 	{
-		registers[1] = registers[0] / pow(2, combOperand);
+		registers[1] = (double)registers[0] / pow(2, GetCombOperand(registers, opcode, literalOperand));
 	}
 	else if (opcode == 7)
 	{
-		registers[1] = registers[0] / pow(2, combOperand);
+		registers[2] = (double)registers[0] / pow(2, GetCombOperand(registers, opcode, literalOperand));
 	}
 	pointer += 2;
+}
+
+void Solve(vector<long long>& registers, const vector<long long>& program, string& out)
+{
+	size_t pointer = 0;
+	while (pointer < program.size())
+	{
+		DoInstruction(registers, pointer, program[pointer], program[pointer + 1], out);
+	}
 }
