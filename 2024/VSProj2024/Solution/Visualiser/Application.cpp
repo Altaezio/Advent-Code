@@ -42,7 +42,7 @@ int StartApplication(string fileName)
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		myWindow->ShowJ15();
+		myWindow->ShowJ18();
 
 		currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
@@ -50,7 +50,7 @@ int StartApplication(string fileName)
 		nextIteration -= deltaTime;
 		if (nextIteration < 0.0)
 		{
-			Window::GetInstance("J15")->NextStepJ15v2(false);
+			//Window::GetInstance("J15")->NextStepJ15v2(false);
 			nextIteration += baseIteration;
 		}
 
@@ -75,7 +75,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	{
 		//Window::GetInstance("test")->ProcessJ06(false);
 		//Window::GetInstance("J14")->NextStepJ14();
-		Window::GetInstance("J15")->NextStepJ15v2(false);
+		//Window::GetInstance("J15")->NextStepJ15v2(false);
+		Window::GetInstance("J18")->NextStepJ18();
 	}
 	if (key == GLFW_KEY_ENTER && action == GLFW_PRESS)
 	{

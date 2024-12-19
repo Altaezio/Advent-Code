@@ -1,29 +1,13 @@
 #include <iostream>
 #include <chrono>
 #include "Solution/Visualiser/Application.h"
-#include "Solution/J1.h"
-#include "Solution/J2.h"
-#include "Solution/J3.h"
-#include "Solution/J04.h"
-#include "Solution/J05.h"
-#include "Solution/J06.h"
-#include "Solution/J07.h"
-#include "Solution/J08.h"
-#include "Solution/J09.h"
-#include "Solution/J10.h"
-#include "Solution/J11.h"
-#include "Solution/J12.h"
-#include "Solution/J13.h"
-#include "Solution/J14.h"
-#include "Solution/J15.h"
-#include "Solution/J16.h"
-#include "Solution/J17.h"
+#include "Solution/J18.h"
 
 int main()
 {
-	auto solv1 = sol17v1;
-	auto solv2 = sol17v2;
-	std::string fileName = "J17";
+	auto solv1 = sol18v1;
+	auto solv2 = sol18v2;
+	std::string fileName = "J18";
 
 	std::cout << "=== " << fileName << " ===" << std::endl;
 	auto startTest1 = std::chrono::steady_clock::now();
@@ -47,5 +31,5 @@ int main()
 	diff = endReal2 - endTest2;
 	std::cout << "in " << std::chrono::duration<double, std::milli>(diff).count() << "ms" << std::endl;
 
-	//StartApplication(fileName);
+	StartApplication(fileName);
 }

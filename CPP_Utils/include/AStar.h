@@ -1,7 +1,11 @@
 #pragma once
+#include <stdexcept>
 #include <vector>
 #include <string>
 #include <map>
+#include <algorithm>
+#include <iterator>
+#include <numeric>
 
 // Generic A* algorithm
 
@@ -19,7 +23,11 @@ struct Node
 		: dimensions(dimensions), position(position)
 	{
 	}
-	Node(size_t dimensions, const std::vector<size_t>& position, const std::vector<size_t>& previous, long long cost, long long heuristic)
+	Node(size_t dimensions, const std::vector<size_t>& position, long long cost, long long heuristic)
+		: dimensions(dimensions), position(position), cost(cost), heuristic(heuristic)
+	{
+	}
+	Node(size_t dimensions, const std::vector<size_t>& position, long long cost, long long heuristic, const std::vector<size_t>& previous)
 		: dimensions(dimensions), position(position), cost(cost), heuristic(heuristic)
 	{
 		this->previous.push_back(previous);
@@ -32,22 +40,39 @@ bool operator==(const Node& lhs, const Node& rhs)
 	return lhs.position == rhs.position && lhs.cost == rhs.cost;
 }
 
+bool SimpleIsAtObjective(const Node& objective, const Node& node);
+
 std::vector<std::vector<size_t>> SimpleGetNeighbours2D(const std::vector<std::string>& map, const std::vector<size_t> pos);
 
 bool CompareNodeOnHeuristic(Node a, Node b);
+
+template<class T>
+double Distance(std::vector<T> a, std::vector<T> b)
+{
+	if (a.size() != b.size())
+	{
+		throw std::invalid_argument("vectors not the same size");
+	}
+	std::vector<double> auxiliary;
+
+	std::transform(a.begin(), a.end(), b.begin(), std::back_inserter(auxiliary),
+		[](T element1, T element2) {return pow((element1 - element2), 2); });
+
+	return  sqrt(std::accumulate(auxiliary.begin(), auxiliary.end(), 0.0));
+}
 
 template<class T>
 std::vector<T> GetShortestPath(
 	const std::vector<std::string>& currentMap,
 	T& start,
 	T& objective,
-	bool (*IsAtObjective)(const T&, const T&),
 	T(*CreateNode)(
 		const std::vector<std::string>&,
 		std::vector<size_t>,
 		T&,
 		std::vector<size_t>,
 		std::vector<size_t>),
+	bool (*IsAtObjective)(const T&, const T&) = &SimpleIsAtObjective,
 	std::vector<std::vector<size_t>>(*GetNeighbours)(const std::vector<std::string>&, const std::vector<size_t>) = &SimpleGetNeighbours2D,
 	std::map<std::vector<size_t>, T>* closedListOut = nullptr,
 	bool visitAll = false)
@@ -63,7 +88,7 @@ std::vector<T> GetShortestPath(
 		std::vector<size_t> bestPos = openList.begin()->first;
 		for (auto it = openList.begin(); it != openList.end(); it++)
 		{
-			if (it->second.heuristic < openList[bestPos].heuristic)
+			if (it->second.cost + it->second.heuristic < openList[bestPos].cost + openList[bestPos].heuristic)
 			{
 				bestPos = it->first;
 			}
@@ -85,7 +110,7 @@ std::vector<T> GetShortestPath(
 				break;
 			}
 		}
-		for (std::vector<size_t> n : GetNeighbours(currentMap, bestNode.position))
+		for (std::vector<size_t>& n : GetNeighbours(currentMap, bestNode.position))
 		{
 			T neighbour = CreateNode(currentMap, n, bestNode, start.position, objective.position);
 
@@ -100,7 +125,7 @@ std::vector<T> GetShortestPath(
 					continue;
 				}
 				else if (openList[neighbour.position].cost == neighbour.cost &&
-					find(openList[neighbour.position].previous.begin(), openList[neighbour.position].previous.end(), bestNode) == openList[neighbour.position].previous.end())
+					find(openList[neighbour.position].previous.begin(), openList[neighbour.position].previous.end(), bestNode.position) == openList[neighbour.position].previous.end())
 				{
 					openList[neighbour.position].previous.push_back(bestNode.position);
 					continue;
@@ -109,7 +134,7 @@ std::vector<T> GetShortestPath(
 			if (closedList.contains(neighbour.position))
 			{
 				if (closedList[neighbour.position].cost == neighbour.cost &&
-					find(closedList[neighbour.position].previous.begin(), closedList[neighbour.position].previous.end(), bestNode) == closedList[neighbour.position].previous.end())
+					find(closedList[neighbour.position].previous.begin(), closedList[neighbour.position].previous.end(), bestNode.position) == closedList[neighbour.position].previous.end())
 				{
 					closedList[neighbour.position].previous.push_back(bestNode.position);
 				}
@@ -129,7 +154,7 @@ std::vector<T> GetShortestPath(
 	}
 	else
 	{
-		return {}; // ERROR
+		return {}; // No path found
 	}
 }
 
@@ -145,11 +170,34 @@ std::vector<T> RebuildPath(
 	std::vector<T> path;
 	path.push_back(end);
 	T node = end;
-	while (node.previous.size() > 0 && node.previous[0][0] != std::numeric_limits<size_t>::max())
+	while (node.previous.size() > 0)
 	{
 		T bestPrevious = visitedNodes[node.previous[0]];
+		for (std::vector<size_t>& previousPos : node.previous)
+		{
+			T& previous = visitedNodes[previousPos];
+			if (previousPos[0] != std::numeric_limits<size_t>::max() &&
+				previousPos[1] != std::numeric_limits<size_t>::max() &&
+				(bestPrevious.position[0] == std::numeric_limits<size_t>::max() ||
+					bestPrevious.position[1] == std::numeric_limits<size_t>::max() ||
+					previous.cost < bestPrevious.cost))
+			{
+				bestPrevious = previous;
+			}
+		}
 		path.insert(path.begin(), bestPrevious);
 		node = bestPrevious;
 	}
 	return path;
+}
+
+template<class T>
+void DrawPath(std::vector<std::string>& map, const std::vector<T>& path, char pathChar = 'O')
+{
+	static_assert(std::is_base_of<Node, T>::value, "T must inherit from Node");
+
+	for (T node : path)
+	{
+		map[node.position[1]][node.position[0]] = pathChar;
+	}
 }

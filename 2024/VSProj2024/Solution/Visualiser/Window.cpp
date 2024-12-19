@@ -1,9 +1,12 @@
 #include "Window.h"
 #include <iostream>
 #include <FileHandler.h>
+#include <AStar.h>
 #include "..\J06.h"
 #include "..\J14.h"
 #include "..\J15.h"
+#include "..\J18.h"
+
 
 using namespace std;
 
@@ -361,6 +364,121 @@ void Window::NextStepJ15v2(bool solveAll)
 
 #pragma endregion
 
+#pragma region J18
+
+void Window::ShowJ18()
+{
+	if (currentMap.size() == 0)
+	{
+		return;
+	}
+
+
+	float cellWidthPercent = 1.00f / currentMap[0].size();
+	float cellHeightPercent = 1.00f / currentMap.size();
+
+	vector<float> corruptedColor{ 0.56f,0.0f,0.56f };
+	vector<float> pathColor{ 1.0f,1.0f,1.0f };
+	vector<float> visitedColor{ 0.5f,0.5f,0.5f };
+
+
+	for (size_t lineIndex = 0; lineIndex < currentMap.size(); lineIndex++)
+	{
+		string line = currentMap[lineIndex];
+		for (size_t cellIndex = 0; cellIndex < line.size(); cellIndex++)
+		{
+			float x1 = -1.0f + 2 * cellIndex * cellWidthPercent;
+			float y1 = 1.0f - 2 * lineIndex * cellHeightPercent;
+			float x2 = -1.0f + 2 * (cellIndex + 1) * cellWidthPercent;
+			float y2 = 1.0f - 2 * (lineIndex + 1) * cellHeightPercent;
+
+			vector<float> color(3, 0.0f);
+			if (line[cellIndex] == '#')
+			{
+				color = corruptedColor;
+			}
+			else if (line[cellIndex] == '.')
+			{
+				continue;
+			}
+			else if (line[cellIndex] == 'O')
+			{
+				color = pathColor;
+			}
+			else if (line[cellIndex] == '|')
+			{
+				color = visitedColor;
+			}
+			glColor3f(color[0], color[1], color[2]);
+
+			glRectf(x1, y1, x2, y2);
+		}
+	}
+}
+
+void Window::NextStepJ18()
+{
+	if (currentMap.size() == 0)
+	{
+		vector<string> lines = getSolutionLines(fileName);
+		spaceSize = { 71,71 };
+		if (fileName == "test")
+		{
+			spaceSize = { 7,7 };
+		}
+		for (size_t y = 0; y < spaceSize[1]; y++)
+		{
+			string line(spaceSize[0], '.');
+			currentMap.push_back(line);
+		}
+		corruptionLevel = 0;
+		maxCorruptionLevel = lines.size();
+	}
+	else if (corruptionLevel < maxCorruptionLevel)
+	{
+		while (true)
+		{
+			size_t comma = lines[corruptionLevel].find(',');
+			vector<size_t> pos;
+			pos.push_back(stoull(lines[corruptionLevel].substr(0, comma)));
+			pos.push_back(stoull(lines[corruptionLevel].substr(comma + 1, lines[corruptionLevel].size() - comma)));
+			currentMap[pos[1]][pos[0]] = '#';
+			if (currentPath.size() == 0 || find(currentPath.begin(), currentPath.end(), pos) != currentPath.end())
+			{
+				for (string& line : currentMap)
+				{
+					for (char& c : line)
+					{
+						if (c != '#')
+						{
+							c = '.';
+						}
+					}
+				}
+
+				Node start(2, { 0,0 }, 0, 0);
+				Node end(2, { spaceSize[0] - 1,spaceSize[1] - 1 });
+				map<vector<size_t>, Node> visited;
+				vector<Node> path = GetShortestPath<Node>(currentMap, start, end, CreateNode, SimpleIsAtObjective, SimpleGetNeighbours2D, &visited);
+				for (auto it = visited.begin(); it != visited.end(); it++)
+				{
+					currentMap[it->first[1]][it->first[0]] = '|';
+				}
+				currentPath.clear();
+				for (Node& node : path)
+				{
+					currentPath.push_back(node.position);
+					currentMap[node.position[1]][node.position[0]] = 'O';
+				}
+				cout << endl << "Corruption Level : " << corruptionLevel << " with " << end.cost << " steps" << endl;
+				break;
+			}
+			corruptionLevel += 1;
+		}
+	}
+}
+
+#pragma endregion
 
 
 Window::Window(string fileName) : window(), fileName(fileName)

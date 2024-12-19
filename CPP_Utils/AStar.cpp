@@ -1,5 +1,4 @@
 #include <AStar.h>
-#include <algorithm>
 
 using namespace std;
 
@@ -28,4 +27,9 @@ vector<vector<size_t>> SimpleGetNeighbours2D(const vector<string>& map, const ve
 		neighbours.push_back({ pos[0],pos[1] + 1 });
 	}
 	return neighbours;
+}
+
+bool SimpleIsAtObjective(const Node& objective, const Node& node)
+{
+	return node.position == objective.position;
 }

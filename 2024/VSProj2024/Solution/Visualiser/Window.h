@@ -23,12 +23,16 @@ public:
 	void NextStepJ15v1();
 	void NextStepJ15v2(bool solveAll);
 
+	void ShowJ18();
+	void NextStepJ18();
+
 private:
 	Window(std::string fileName);
 	~Window();
 
 	std::string fileName;
 	std::vector<std::string> lines;
+	std::vector<std::string> currentMap;
 
 	// --J06 data--
 	std::vector<int> currentPos{ -1,-1 };
@@ -43,9 +47,15 @@ private:
 	// --
 
 	// --J15 data--
-	std::vector<std::string> currentMap;
 	std::vector<size_t> currentInstruction;
 	std::vector<size_t> currentRobotPosition;
+	// --
+
+	// --J18 data--
+	std::vector<size_t> spaceSize;
+	size_t corruptionLevel = 0;
+	size_t maxCorruptionLevel = 0;
+	std::vector<std::vector<size_t>> currentPath;
 	// --
 
 	static Window* Instance;

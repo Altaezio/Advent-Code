@@ -32,9 +32,7 @@ string sol16v1(string solutionFileName)
 		}
 	}
 	start.push_back(0);
-	DirectedNode startNode(start);
-	startNode.cost = 0;
-	startNode.heuristic = 0;
+	DirectedNode startNode(start, 0, 0);
 	DirectedNode endNode(end);
 	endNode.position.push_back(0);
 	map<char, long long> costs;
@@ -44,7 +42,7 @@ string sol16v1(string solutionFileName)
 	costs['S'] = numeric_limits<long long>::max();
 
 	map<vector<size_t>, DirectedNode> visited;
-	vector<DirectedNode> bestPath = GetShortestPath<DirectedNode>(lines, startNode, endNode, IsAtObjective, CreateNode, SimpleGetNeighbours2D, &visited);
+	vector<DirectedNode> bestPath = GetShortestPath<DirectedNode>(lines, startNode, endNode, CreateNode, IsAtObjective, SimpleGetNeighbours2D, &visited);
 	for (auto it = visited.begin(); it != visited.end(); it++)
 	{
 		lines[it->first[1]][it->first[0]] = '|';
@@ -127,7 +125,7 @@ DirectedNode CreateNode(
 		}
 	}
 	long long heuristic = cost;
-	return DirectedNode(position, previousNode.position, cost, heuristic);
+	return DirectedNode(position, cost, heuristic, previousNode.position);
 }
 
 bool IsAtObjective(const DirectedNode& objective, const DirectedNode& node)

@@ -14,8 +14,12 @@ struct DirectedNode : Node
 		: Node(3, position)
 	{
 	}
-	DirectedNode(const std::vector<size_t>& position, const std::vector<size_t>& previous, long long cost, long long heuristic)
-		: Node(3, position, previous, cost, heuristic)
+	DirectedNode(const std::vector<size_t>& position, long long cost, long long heuristic)
+		: Node(3, position, cost, heuristic)
+	{
+	}
+	DirectedNode(const std::vector<size_t>& position, long long cost, long long heuristic, const std::vector<size_t>& previous)
+		: Node(3, position, cost, heuristic, previous)
 	{
 		std::vector<size_t> dir;
 		for (size_t i = 0; i < 2; i++)
